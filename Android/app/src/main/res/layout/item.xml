@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="@android:color/holo_blue_light"
+    android:backgroundTint="@android:color/holo_blue_light"
+    android:orientation="vertical"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="0dp"
+    app:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageCamion"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:contentDescription="image du food truck" />
+
+        <TextView
+            android:id="@+id/titre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/imageCamion"
+            android:layout_marginStart="77dp"
+            android:textSize="18sp"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:id="@+id/fragment_distance"
+            android:layout_width="302dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imageCamion"
+            android:layout_alignStart="@+id/titre" />
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

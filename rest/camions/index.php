@@ -28,11 +28,7 @@ class FoodTruck {
 function getFoodTrucks() {
     $today = date('l');
     $db = getDB();
-    $request = $db->prepare("SELECT tFoodTruck.idFoodTruck, Nom, Image, idProprietaire, tLocalisation.Latitude, tLocalisation.Longitude, DATE_FORMAT(tEstA.HoraireDebut, '%H:%i') AS 'HoraireDebut', DATE_FORMAT(tEstA.HoraireFin, '%H:%i') AS 'HoraireFin', tEstA.JourSemaine, tFoodTruck.Contact "
-            . "FROM tFoodTruck, tEstA, tLocalisation "
-            . "WHERE tEstA.JourSemaine = :jSemaine "
-            . "AND tEstA.idFoodTruck = tFoodTruck.idFoodTruck "
-            . "AND tEstA.idLocalisation = tLocalisation.idLocalisation");
+    $request = $db->prepare("SELECT TFOODTRUCK.idFoodTruck, Nom, Image, idProprietaire, TLOCALISATION.Latitude, TLOCALISATION.Longitude, DATE_FORMAT(TESTA.HoraireDebut, '%H:%i') AS 'HoraireDebut', DATE_FORMAT(TESTA.HoraireFin, '%H:%i') AS 'HoraireFin', TESTA.JourSemaine, TFOODTRUCK.Contact FROM TFOODTRUCK, TESTA, TLOCALISATION WHERE TESTA.JourSemaine = :jSemaine AND TESTA.idFoodTruck = TFOODTRUCK.idFoodTruck AND TESTA.idLocalisation = TLOCALISATION.idLocalisation");
     $request->bindParam('jSemaine', $today, PDO::PARAM_STR);
     $request->execute();
     $data = $request->fetchAll(PDO::FETCH_ASSOC);
@@ -62,7 +58,7 @@ function getFoodTrucks() {
  */
 function getNoteFoodTruck($idFoodTruck) {
     $db = getDB();
-    $request = $db->prepare("SELECT AVG(`Note`) FROM `tAvis` WHERE `idFoodTruck` = :id");
+    $request = $db->prepare("SELECT AVG(`Note`) FROM `TAVIS` WHERE `idFoodTruck` = :id");
     $request->bindParam('id', $idFoodTruck, PDO::PARAM_INT);
     $request->execute();
     $data = $request->fetchAll(PDO::FETCH_ASSOC);
@@ -79,7 +75,7 @@ function getNoteFoodTruck($idFoodTruck) {
  */
 function getFoodTrucksProduits($idFoodTruck) {
     $db = getDB();
-    $request = $db->prepare("SELECT `tProduit`.`Nom` FROM `tProduit`, `tVend` WHERE `tVend`.`idFoodTruck` = :id GROUP BY `tProduit`.`Nom`");
+    $request = $db->prepare("SELECT `TPRODUITS`.`Nom` FROM `TPRODUITS`, `TVEND` WHERE `TVEND`.`idFoodTruck` = :id GROUP BY `TPRODUITS`.`Nom`");
     $request->bindParam('id', $idFoodTruck, PDO::PARAM_INT);
     $request->execute();
     $data = $request->fetchAll(PDO::FETCH_ASSOC);
