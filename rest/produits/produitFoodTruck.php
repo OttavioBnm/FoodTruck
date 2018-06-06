@@ -1,15 +1,18 @@
 <?php
+/*
+ * Projet       : Food Truck Tracker (service web)
+ * Nom          : produits/produitFoodTruck.php
+ * Description  : Récupère tous les produits sur la base de données vendus par un food truck
+ * Auteur       : Ottavio Buonomo
+ * Date         : 06.06.2018
+ * Version      : 1.0
+ */
 
-// Require du PDO
-require "../pdo.php";
-
-class Produit {
-
-    public $idProduit;
-    public $nom;
-
-}
-
+/**
+ * Récupère les produits selon l'id d'un food truck
+ * @param int $id - id du food truck
+ * @return string - tous les produits vendus
+ */
 function getProduitSelonIdFoodTruck($id) {
     $db = getDB();
     $request = $db->prepare("SELECT TPRODUIT.`idProduit`, TPRODUIT.`Nom` FROM `TPRODUIT`, TFOODTRUCK, TVEND WHERE TFOODTRUCK.idFoodTruck = :id AND TVEND.idProduit = TPRODUIT.idProduit");
@@ -17,12 +20,13 @@ function getProduitSelonIdFoodTruck($id) {
     $request->execute();
     $data = $request->fetchAll(PDO::FETCH_ASSOC);
     $array = array();
-    foreach ($data as $entry) {
-        $obj = new Produit();
-        $obj->idProduit = $entry['idProduit'];
-        $obj->nom = $entry['Nom'];
-        $array[] = $obj;
+    for ($i=0; $i < count($data); $i++) {
+        if ($i == count($data)-1) {
+            $str .= $data[$i]['Nom'];
+        }
+        else{
+            $str .= $data[$i]['Nom'] . ", ";
+        }
     }
-    return json_encode($array);
+    return $str;
 }
-echo getProduitSelonIdFoodTruck(1);

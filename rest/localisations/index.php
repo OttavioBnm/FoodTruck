@@ -1,8 +1,19 @@
 <?php
+/*
+ * Projet       : Food Truck Tracker (service web)
+ * Nom          : localisation/index.php
+ * Description  : Récupère une localisation
+ * Auteur       : Ottavio Buonomo
+ * Date         : 06.06.2018
+ * Version      : 1.0
+ */
 
 // Require du PDO
 require "../pdo.php";
 
+/**
+ * Classe qui modélise une localisation
+ */
 class Localisation {
 
     public $idLocalisation;
@@ -11,6 +22,11 @@ class Localisation {
 
 }
 
+/**
+ * Récupère une localisation selon son id
+ * @param int $id           - id de la localisation
+ * @return array de json    - localisation en json
+ */
 function getLocalisationSelonId($id) {
     $db = getDB();
     $request = $db->prepare("SELECT * FROM `TLOCALISATION` WHERE `idLocalisation` = :id");

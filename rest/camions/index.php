@@ -1,7 +1,15 @@
 <?php
+/*
+ * Projet       : Food Truck Tracker (service web)
+ * Nom          : camions/index.php
+ * Description  : Retourne tous les food truck présents sur la base de données
+ * Auteur       : Ottavio Buonomo
+ * Date         : 06.06.2018
+ * Version      : 1.0
+ */
 
-// Require du PDO
-require "../pdo.php";
+require "../produits/produitFoodTruck.php";
+require "../avis/index.php";
 
 /**
  * Classe modélisant un food truck
@@ -45,49 +53,10 @@ function getFoodTrucks() {
         $obj->heureFin = $entry['HoraireFin'];
         $obj->jourSemaine = $entry['JourSemaine'];
         $obj->contact = $entry['Contact'];
-        $obj->lstProduits = getFoodTrucksProduits($obj->idFoodTruck);
+        $obj->lstProduits = getProduitSelonIdFoodTruck($obj->idFoodTruck);
         $array[] = $obj;
     }
     return json_encode($array);
-}
-
-/**
- * Fait la moyenne de tous les avis d'un food truck
- * @param int $idFoodTruck - id du food truck dont on souhaite les avis
- * @return double moyenne de tous les avis d'un food truck
- */
-function getNoteFoodTruck($idFoodTruck) {
-    $db = getDB();
-    $request = $db->prepare("SELECT AVG(`Note`) FROM `TAVIS` WHERE `idFoodTruck` = :id");
-    $request->bindParam('id', $idFoodTruck, PDO::PARAM_INT);
-    $request->execute();
-    $data = $request->fetchAll(PDO::FETCH_ASSOC);
-    foreach ($data as $value) {
-        $str = $value['AVG(`Note`)'];
-    }
-    return $str;
-}
-
-/**
- * Récupère tous les produits vendus par un food truck
- * @param int $idFoodTruck - id du food truck dont on souhaite les produits
- * @return string les produits vendus par un food truck sépartés par une virgule
- */
-function getFoodTrucksProduits($idFoodTruck) {
-    $db = getDB();
-    $request = $db->prepare("SELECT `TPRODUITS`.`Nom` FROM `TPRODUITS`, `TVEND` WHERE `TVEND`.`idFoodTruck` = :id GROUP BY `TPRODUITS`.`Nom`");
-    $request->bindParam('id', $idFoodTruck, PDO::PARAM_INT);
-    $request->execute();
-    $data = $request->fetchAll(PDO::FETCH_ASSOC);
-    for ($i=0; $i < count($data); $i++) {
-        if ($i == count($data)-1) {
-            $str .= $data[$i]['Nom'];
-        }
-        else{
-            $str .= $data[$i]['Nom'] . ", ";
-        }
-    }
-    return $str;
 }
 
 // Affichage du Json

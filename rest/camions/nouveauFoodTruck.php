@@ -1,10 +1,17 @@
 <?php
+/*
+ * Projet       : Food Truck Tracker (service web)
+ * Nom          : camions/nouveauFoodTruck.php
+ * Description  : Ajoute un nouveau food truck avec les nouvelles données provenant de l'application
+ * Auteur       : Ottavio Buonomo
+ * Date         : 06.06.2018
+ * Version      : 1.0
+ */
 
 // Require du PDO
 require "../pdo.php";
-
-// required headers
-header("Access-Control-Allow-Methods: POST");
+require '../localisations/nouveauLieu.php';
+require '../horaire/nouvelHoraire.php';
 
 /**
  * Permet l'ajout d'un nouveau food truck à la base de données avec toutes les caracteristiques
@@ -39,6 +46,10 @@ function creerFoodTruck($nom, $image, $lon, $lat, $heureDebut, $heureFin, $jourS
                 $flagOk = FALSE;
             } else {
                 creerHoraire($truckExiste, $idLieu, $heureDebut, $heureFin, $jourSemaine);
+                if (!ajouterNote($truckExiste, $note)) {
+                    var_dump($truckExiste);
+                    $flagOk = FALSE;
+                }
             }
         } else {
             $flagOk = FALSE;
@@ -81,7 +92,7 @@ function ajouterFoodTruck($nom, $image, $contact, $idProprietaire) {
 
 /**
  * Vérifie si le food truck est déjà présent sur la base de données
- * @param string $nom             - Nom du FT
+ * @param string $nom           - Nom du FT
  * @return boolean|int|string   - Si le FT existe -> retourne l'id de celui-ci
  *                              - Si le FT n'existe pas -> retourne false
  *                              - Si une erreur s'est produite -> retourne "Erreur"
@@ -106,110 +117,6 @@ function verifierSiFoodTruckExiste($nom) {
     }
 }
 
-/**
- * Ajoute un lieu à la base de données ou récupère l'id d'un lieu existant
- * @param double $lat   - Latitude du lieu
- * @param double $lon   - Longitude du lieu
- * @return boolean|int  - L'id du lieu concerné
- *                      - Si une erreur se produit -> retourne false
- */
-function creerLieu($lat, $lon) {
-    try {
-        $LieuExiste = verifierSiLieuExiste($lat, $lon);
-        if ($LieuExiste === FALSE) {
-            return ajouterLieu($lat, $lon);
-        } else if ($LieuExiste === "Erreur") {
-            return FALSE;
-        } else {
-            return $LieuExiste;
-        }
-    } catch (Exception $ex) {
-        return FALSE;
-    }
-}
-
-/**
- * Ajoute un lieu à la base de données
- * @param double $lat       - Latitude du lieu
- * @param double $lon       - Longitude du lieu
- * @return boolean|int      - Si le lieu est ajouté -> retourne l'id de celui-ci 
- *                          - Si le lieu n'est pas ajouté -> retourne false
- */
-function ajouterLieu($lat, $lon) {
-    try {
-        $request = "INSERT INTO `TLOCALISATION`(`Latitude`, `Longitude`) VALUES (:latitude, :longitude)";
-        $connect = getDB();
-        $dbQuery = $connect->prepare($request);
-        $dbQuery->bindParam(':latitude', $lat);
-        $dbQuery->bindParam(':longitude', $lon);
-        $dbQuery->execute();
-    } catch (Exception $exc) {
-        return FALSE;
-    }
-    $requestMaxId = "SELECT MAX(idLocalisation) AS dernierId FROM TLOCALISATION LIMIT 1";
-    $dbQuery = $connect->prepare($requestMaxId);
-    $dbQuery->execute();
-    $array = $dbQuery->fetchAll(PDO::FETCH_ASSOC);
-    foreach ($array as $value) {
-        return $value['dernierId'];
-    }
-}
-
-/**
- * Vérifie si le lieu existe sur la base de données
- * @param double $lat - Latitude du lieu
- * @param double $lon - Longitude du lieu
- * @return boolean|string|int   - Si le lieu existe -> retourne l'id de celui-ci
- *                              - Si le lieu n'existe pas -> retourne false
- *                              - Si une erreur se produit -> retourne "Erreur"
- */
-function verifierSiLieuExiste($lat, $lon) {
-    try {
-        $request = "SELECT * FROM `TLOCALISATION` WHERE `Latitude` = :latitude AND `Longitude` = :longitude LIMIT 1";
-        $connect = getDB();
-        $dbQuery = $connect->prepare($request);
-        $dbQuery->bindParam(':latitude', $lat);
-        $dbQuery->bindParam(':longitude', $lon);
-        $dbQuery->execute();
-        $locArray = $dbQuery->fetchAll(PDO::FETCH_ASSOC);
-        if (empty($locArray)) {
-            return FALSE;
-        } else {
-            foreach ($locArray as $value) {
-                return $value['idLocalisation'];
-            }
-        }
-    } catch (Exception $exc) {
-        return "Erreur";
-    }
-}
-
-/**
- * Ajoute la nouvel horaire du food truck dans la base de données
- * @param int $idFoodTruck      - Id du food truck concerné par le nouvel horaire
- * @param int $idLocalisation   - Id du lieu concerné
- * @param string $heureDebut    - Heure de début de la vente
- * @param string $heureFin      - Heure de fin de la vente 
- * @param string $jourSemaine   - Jour de la semaine concerné
- * @return boolean              - Si l'ajout est effectué avec succès -> retourne true
- *                              - Si l'ajout n'est pas effectué avec succès -> retourne false
- */
-function creerHoraire($idFoodTruck, $idLocalisation, $heureDebut, $heureFin, $jourSemaine) {
-    try {
-        $request = "INSERT INTO `TESTA`(`idFoodTruck`, `idLocalisation`, `HoraireDebut`, `HoraireFin`, `JourSemaine`) VALUES (:idFoodTruck, :idLocalisation, :heureDebut, :heureFin, :jourSemaine)";
-        $connect = getDB();
-        $dbQuery = $connect->prepare($request);
-        $dbQuery->bindParam(':idFoodTruck', $idFoodTruck, PDO::PARAM_INT);
-        $dbQuery->bindParam(':idLocalisation', $idLocalisation, PDO::PARAM_INT);
-        $dbQuery->bindParam(':heureDebut', $heureDebut, PDO::PARAM_STR);
-        $dbQuery->bindParam(':heureFin', $heureFin, PDO::PARAM_STR);
-        $dbQuery->bindParam(':jourSemaine', $jourSemaine, PDO::PARAM_STR);
-        $dbQuery->execute();
-    } catch (Exception $exc) {
-        return FALSE;
-    }
-    return TRUE;
-}
 
 /**
  * Ajoute un avis sur un food truck 
@@ -220,18 +127,21 @@ function creerHoraire($idFoodTruck, $idLocalisation, $heureDebut, $heureFin, $jo
 function ajouterNote($idFoodTruck, $note) {
     if ($note !== NULL) {
         try {
+            var_dump($note);
             $request = "INSERT INTO `TAVIS`(`Note`, `idFoodTruck`) VALUES (:note,:idFoodTruck)";
             $connect = getDB();
             $dbQuery = $connect->prepare($request);
             $dbQuery->bindParam(':idFoodTruck', $idFoodTruck, PDO::PARAM_INT);
             $dbQuery->bindParam(':note', $note, PDO::PARAM_INT);
             $dbQuery->execute();
+            return TRUE;
         } catch (Exception $exc) {
             return FALSE;
         }
     }
 }
 
+// Données provenant de l'application
 $nomFoodTruck = filter_input(INPUT_POST, 'nomFoodTruck', FILTER_SANITIZE_STRING);
 $imageFoodTruck = filter_input(INPUT_POST, 'imageFoodTruck', FILTER_SANITIZE_STRING);
 $contactFoodTruck = filter_input(INPUT_POST, 'contactFoodTruck', FILTER_SANITIZE_STRING);
@@ -243,8 +153,9 @@ $jourSemaineFoodTruck = filter_input(INPUT_POST, 'jourSemaineFoodTruck', FILTER_
 $idProprietaireFoodTruck = filter_input(INPUT_POST, 'idProprietaireFoodTruck', FILTER_VALIDATE_INT);
 $noteFoodTruck = filter_input(INPUT_POST, 'noteFoodTruck', FILTER_VALIDATE_INT);
 
+// Ajout du food truck
 if (creerFoodTruck($nomFoodTruck, $imageFoodTruck, $lonFoodTruck, $latFoodTruck, $heureDebutFoodTruck, $heureFinFoodTruck, $jourSemaineFoodTruck, $noteFoodTruck, $idProprietaireFoodTruck, $contactFoodTruck)) {
     echo json_encode("Succès");
 } else {
-    header("HTTP/1.0 501 Intrnal Error");
+    header("HTTP/1.0 500 Intrnal Error");
 }

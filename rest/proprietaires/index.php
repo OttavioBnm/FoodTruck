@@ -1,8 +1,19 @@
 <?php
+/*
+ * Projet       : Food Truck Tracker (service web)
+ * Nom          : proprietaires/index.php
+ * Description  : Récupère un propriétaire de la base de données
+ * Auteur       : Ottavio Buonomo
+ * Date         : 06.06.2018
+ * Version      : 1.0
+ */
 
 // Require du PDO
 require "../pdo.php";
 
+/**
+ * Classe qui modélise un propriétaire
+ */
 class Proprietaire {
 
     public $idProprietaire;
@@ -14,6 +25,11 @@ class Proprietaire {
 
 }
 
+/**
+ * Récupère un propriétaire sur la base de données selon un id
+ * @param int $id - id du propriétaire à récupérer
+ * @return json - propriétaire sous forme de json
+ */
 function getProprietareSelonId($id) {
     $db = getDB();
     $request = $db->prepare("SELECT `TPROPRIETAIRE`.`idProprietaire`, `TPROPRIETAIRE`.`Nom`, `Prenom`, `Pseudo`, `Courriel`, `MotDePasse` FROM `TPROPRIETAIRE` WHERE `TPROPRIETAIRE`.`IdProprietaire` = :id");
@@ -33,4 +49,7 @@ function getProprietareSelonId($id) {
     }
     return json_encode($array);
 }
-echo getProprietareSelonId(1);
+
+// donnée de l'application
+$idProprietaire = filter_input(INPUT_POST, 'idProprietaire', FILTER_VALIDATE_INT);
+echo getProprietareSelonId($idProprietaire);
