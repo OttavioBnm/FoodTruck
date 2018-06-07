@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <!-- Couleurs de l'application -->
+    <color name="colorPrimary">#d61800</color>
+    <color name="colorPrimaryDark">#9c0000</color>
+    <color name="colorAccent">#ff5832</color>
+
+    <!-- Bouton -->
+    <color name="texte_bouton_violet">#7f152e</color>
+    <color name="background_bouton_jaune">#edae01</color>
+
+    <!-- Background de l'application -->
+    <color name="background_application">#eceff1</color>
+
+    <!-- Background des cards -->
+    <color name="background_card_gris">#babdbe</color>
+    <color name="card_detail_backgroud">#d1d3d3</color>
 </resources>

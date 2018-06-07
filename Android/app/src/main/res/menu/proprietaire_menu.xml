@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/file"
+        android:title="ProprietaireDropDown">
+        <item
+            android:id="@+id/gerer"
+            android:title="Gérer mes Food Truck" />
+        <item
+            android:id="@+id/deconnexion"
+            android:title="Déconnexion" />
+        <item
+            android:id="@+id/info"
+            android:title="Info" />
+    </item>
+</menu>
