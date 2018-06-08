@@ -10,11 +10,17 @@
 
 package com.buonomo.cfpt.foodtrucktracker.Controleurs.Activitiees;
 
-import android.support.v4.app.FragmentActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.View;
 
 import com.buonomo.cfpt.foodtrucktracker.Controleurs.Fragments.DetailsFragment;
 import com.buonomo.cfpt.foodtrucktracker.Models.FoodTruck;
+import com.buonomo.cfpt.foodtrucktracker.Models.Owner;
 import com.buonomo.cfpt.foodtrucktracker.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,12 +29,38 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class Map extends FragmentActivity implements OnMapReadyCallback {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
     // Champs
     private GoogleMap mMap;
     private FoodTruck foodTruck;
     private DetailsFragment detailsFragment;
+    private Owner owner;
+    @BindView(R.id.fab_add_to_my_trucks)
+    FloatingActionButton addToMyTrucks;
+
+    /**
+     * Création de l'affichage du menu dans l'action bar de l'activitée
+     * @param menu Menu à afficher
+     * @return affiche le menu (oui/non)
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras == null){
+            inflater.inflate(R.menu.dropdown_menu, menu);
+        }
+        else{
+            owner = (Owner) getIntent().getExtras().getSerializable("owner");
+            inflater.inflate(R.menu.owner_menu, menu);
+        }
+        return true;
+    }
 
     /**
      * Création de la vue d'affichage de la carte et des détails
@@ -37,8 +69,16 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_carte);
+        setContentView(R.layout.activity_map);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ButterKnife.bind(this);
+        Intent intent = getIntent();
         foodTruck = (FoodTruck) getIntent().getSerializableExtra("truck");
+        owner = (Owner) getIntent().getExtras().getSerializable("owner");
+        if (owner!= null){
+            addToMyTrucks.setVisibility(View.VISIBLE);
+        }
+        getSupportActionBar().setTitle(foodTruck.getNom());
         this.configureAndShowDetailsFragment();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -46,6 +86,15 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
     }
 
+    /**
+     * Retour à la page précédente et termine l'activitée
+     * @return vrai si le retour est effectué
+     */
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return super.onSupportNavigateUp();
+    }
 
     /**
      * Manipule la carte quand elle est prête

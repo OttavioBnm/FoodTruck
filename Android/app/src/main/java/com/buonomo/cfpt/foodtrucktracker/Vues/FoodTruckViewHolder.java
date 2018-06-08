@@ -54,8 +54,8 @@ public class FoodTruckViewHolder extends RecyclerView.ViewHolder implements View
      */
     public void updateWithTruck(FoodTruck camion, RequestManager glide, FoodTruckAdapter.Listener callback) {
         this.textViewTitre.setText(camion.getNom());
-        this.textViewDistance.setText("Position : " + camion.getAdressePostale());
-        glide.load("http://le-petitchou.com/wp-content/uploads/2015/04/c_IMG_8902-copie.jpg").apply(RequestOptions.circleCropTransform()).into(imageView);
+        this.textViewDistance.setText(camion.getAdressePostale());
+        glide.load("http://10.134.99.39/rest/img/" + camion.getImage()).apply(RequestOptions.circleCropTransform()).into(imageView);
         this.callbackWeakRef = new WeakReference<FoodTruckAdapter.Listener>(callback);
     }
 

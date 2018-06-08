@@ -11,13 +11,17 @@
 package com.buonomo.cfpt.foodtrucktracker.Outils;
 
 import com.buonomo.cfpt.foodtrucktracker.Models.FoodTruck;
+import com.buonomo.cfpt.foodtrucktracker.Models.Owner;
+import com.buonomo.cfpt.foodtrucktracker.Models.Product;
 
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ServiceAccess {
@@ -33,6 +37,21 @@ public interface ServiceAccess {
 
     Retrofit retrofitTruck = new Retrofit.Builder()
             .baseUrl("http://10.134.99.39/rest/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
+    @GET("produits")
+    Call<List<Product>> getProducts();
+    Retrofit retrofitProducts = new Retrofit.Builder()
+            .baseUrl("http://10.134.99.39/rest/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
+    @GET("fonctions.inc/connexion.php")
+    Call<List<Owner>> getLogin();
+    Retrofit retrofitLogin = new Retrofit.Builder()
+            .baseUrl("http://10.134.99.39/rest/")
+            .client(Authentication.getCredentials())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 }

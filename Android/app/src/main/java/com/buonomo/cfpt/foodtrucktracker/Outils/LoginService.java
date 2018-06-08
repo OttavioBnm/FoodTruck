@@ -1,16 +1,8 @@
-/**
- * Projet       : Food Truck Tracker (application Android)
- * Package      : Outils
- * Interface    : ServiceAccess.java
- * Description  : Interface d'accès au service web pour l'execution des requêtes HTTP
- * Auteur       : Ottavio Buonomo
- * Date         : 07.06.2018
- * Version      : 1.0
- */
-
 package com.buonomo.cfpt.foodtrucktracker.Outils;
 
 import com.buonomo.cfpt.foodtrucktracker.Models.FoodTruck;
+import com.buonomo.cfpt.foodtrucktracker.Models.Owner;
+import com.buonomo.cfpt.foodtrucktracker.Models.Product;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -18,38 +10,40 @@ import java.util.List;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FoodTruckService {
-
+public class LoginService {
     /**
      * Interface d'appel pour la recupération de la liste de food truck
      */
     public interface Callbacks{
-        void onResponse(List<FoodTruck> camions);
+        void onResponse(List<Owner> owner);
         void onFailure();
     }
 
     /**
      * Permet de récupérer la liste des food trucks
      * @param callback l'interface de callback de la classe
-     * @param latitude latitude de l'utilisateur
-     * @param longitude longitude de l'utilisateur
      */
-    public static void getFoodTrucks(FoodTruckService.Callbacks callback, double latitude, double longitude){
-        final WeakReference<FoodTruckService.Callbacks> callbacksWeakReference = new WeakReference<FoodTruckService.Callbacks>(callback);
+    public static void tryLogin(LoginService.Callbacks callback, String email, String password){
+        final WeakReference<LoginService.Callbacks> callbacksWeakReference = new WeakReference<LoginService.Callbacks>(callback);
 
+        ServiceAccess serviceAccess = ServiceAccess.retrofitLogin.create(ServiceAccess.class);
 
-        ServiceAccess serviceAccess = ServiceAccess.retrofitTruck.create(ServiceAccess.class);
+        Authentication.setHeaders(email, password);
+        retrofit2.Call<List<Owner>> call = serviceAccess.getLogin();
 
-        retrofit2.Call<List<FoodTruck>> call = serviceAccess.getFoodTruck(latitude, longitude);
-
-        call.enqueue(new Callback<List<FoodTruck>>() {
+        call.enqueue(new Callback<List<Owner>>() {
             /**
              * Réponse positive du service web
              * @param call requête de la fonction de récupération de données
              * @param response réponse donnée par le service
              */
             @Override
-            public void onResponse(retrofit2.Call<List<FoodTruck>> call, Response<List<FoodTruck>> response) {
+            public void onResponse(retrofit2.Call<List<Owner>> call, Response<List<Owner>> response) {
+                if (response.code() == 403){
+                    if (callbacksWeakReference.get() != null){
+                        callbacksWeakReference.get().onFailure();
+                    }
+                }
                 if (callbacksWeakReference.get() != null){
                     callbacksWeakReference.get().onResponse(response.body());
                 }
@@ -61,7 +55,7 @@ public class FoodTruckService {
              * @param t réponse jetable
              */
             @Override
-            public void onFailure(retrofit2.Call<List<FoodTruck>> call, Throwable t) {
+            public void onFailure(retrofit2.Call<List<Owner>> call, Throwable t) {
                 if (callbacksWeakReference.get() != null){
                     callbacksWeakReference.get().onFailure();
                 }

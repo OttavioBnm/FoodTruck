@@ -11,6 +11,7 @@
 package com.buonomo.cfpt.foodtrucktracker.Controleurs.Activitiees;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import com.buonomo.cfpt.foodtrucktracker.Controleurs.Fragments.MainFragment;
+import com.buonomo.cfpt.foodtrucktracker.Models.Owner;
 import com.buonomo.cfpt.foodtrucktracker.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     // Attributs de la classe
     private MainFragment mainFragment;
     private static Context instance;
+    private Owner owner;
 
     /**
      * Création de l'affichage du menu dans l'action bar de l'activitée
@@ -34,7 +37,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.dropdown_menu, menu);
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras == null){
+            inflater.inflate(R.menu.dropdown_menu, menu);
+        }
+        else{
+            owner = (Owner) getIntent().getExtras().getSerializable("owner");
+            inflater.inflate(R.menu.owner_menu, menu);
+        }
         return true;
     }
 
@@ -61,14 +72,27 @@ public class MainActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.login:
-
+                Intent login = new Intent(MainActivity.this, Login.class);
+                if (owner != null){
+                    login.putExtra("owner", owner);
+                }
+                startActivity(login);
                 return true;
             case R.id.info:
 
                 return true;
+            case R.id.deconnexion:
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intent);
+                //android.os.Process.killProcess(android.os.Process.myPid());
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 
     /**
@@ -89,7 +113,8 @@ public class MainActivity extends AppCompatActivity {
      * @param view vue xml cliquee
      */
     public void onClickFAB(View view){
-
+        Intent i = new Intent(MainActivity.this, AddTruck.class);
+        startActivity(i);
     }
 
     /**

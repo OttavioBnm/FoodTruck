@@ -59,7 +59,7 @@ public class DetailsFragment extends android.support.v4.app.Fragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_carte, container, false);
+        View view = inflater.inflate(R.layout.map_fragment, container, false);
         ButterKnife.bind(this,view);
         this.configureInformations(Glide.with(this));
         return view;
@@ -77,7 +77,7 @@ public class DetailsFragment extends android.support.v4.app.Fragment {
      * Configuration du fragment de l'application avec les informations du food truck
      */
     private void configureInformations(RequestManager glide){
-        glide.load("http://le-petitchou.com/wp-content/uploads/2015/04/c_IMG_8902-copie.jpg").apply(RequestOptions.centerCropTransform()).into(imageFoodTruck);
+        glide.load("http://10.134.99.39/rest/img/" + truck.getImage()).apply(RequestOptions.centerCropTransform()).into(imageFoodTruck);
         if (truck.getContact() !=  null){
             textViewContact.setText(truck.getContact());
         }else {
