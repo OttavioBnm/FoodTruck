@@ -64,7 +64,6 @@ function getFoodTrucks($latUtilisateur, $lonUtilisateur) {
 
 $latitude = filter_input(INPUT_GET, 'lat', FILTER_VALIDATE_FLOAT);
 $longitude = filter_input(INPUT_GET, 'lon', FILTER_VALIDATE_FLOAT);
-error_log($latitude);
 
 // Affichage du Json
 echo getFoodTrucks($latitude, $longitude);
