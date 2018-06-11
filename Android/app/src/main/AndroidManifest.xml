@@ -45,12 +45,14 @@
         <activity
             android:name=".Controleurs.Activitiees.Map"
             android:label="@string/title_activity_carte"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Controleurs.Activitiees.AddTruck"
             android:screenOrientation="portrait"/>
-        <activity android:name=".Controleurs.Activitiees.AddTruck" />
         <activity
             android:name=".Controleurs.Activitiees.Login"
             android:label="@string/title_activity_login"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".Controleurs.Activitiees.CreateAccount"></activity>
     </application>
 
 </manifest>

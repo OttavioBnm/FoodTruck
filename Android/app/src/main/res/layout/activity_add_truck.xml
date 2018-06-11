@@ -15,6 +15,13 @@
         android:gravity="center"
         android:orientation="vertical">
 
+        <ProgressBar
+            android:id="@+id/progressBar_current_location"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
         <ImageView
             android:id="@+id/imgAjouterCamion"
             android:layout_width="150dp"
@@ -33,73 +40,121 @@
             android:inputType="textPersonName"
             android:textColorLink="@color/colorPrimary" />
 
+        <EditText
+            android:id="@+id/tbxContact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/colorAccent"
+            android:ems="10"
+            android:hint="Contact"
+            android:inputType="textPersonName"
+            android:textColorLink="@color/colorPrimary" />
+
         <ImageView
             android:id="@+id/imgCamionAAjouter"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_marginTop="20dp"
-            android:src="@android:drawable/ic_delete" />
+            android:src="@android:drawable/ic_delete"
+            android:onClick="onClickProfilePicture"/>
 
-        <EditText
-            android:id="@+id/tbxAdresseCamion"
+        <LinearLayout
+            android:id="@+id/form_adress_new_truck"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/colorAccent"
-            android:ems="10"
-            android:hint="Adresse"
-            android:inputType="textPersonName"
-            android:textColorLink="@color/colorPrimary" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/tbxNPA"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/colorAccent"
-            android:ems="10"
-            android:hint="NPA"
-            android:inputType="textPersonName"
-            android:textColorLink="@color/colorPrimary" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:gravity="center_vertical|center"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-        <EditText
-            android:id="@+id/tbxLocalite"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/colorAccent"
-            android:ems="10"
-            android:hint="Localité"
-            android:inputType="textPersonName"
-            android:textColorLink="@color/colorPrimary" />
+                <EditText
+                    android:id="@+id/tbxAdresseCamion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/colorAccent"
+                    android:ems="10"
+                    android:hint="Adresse"
+                    android:inputType="textPersonName"
+                    android:textColorLink="@color/colorPrimary" />
 
-        <EditText
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_localise"
+                    android:onClick="getCurrentLocation"/>
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/tbxNPA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/colorAccent"
+                android:ems="10"
+                android:hint="NPA"
+                android:inputType="textPersonName"
+                android:textColorLink="@color/colorPrimary" />
+
+            <EditText
+                android:id="@+id/tbxLocalite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/colorAccent"
+                android:ems="10"
+                android:hint="Localité"
+                android:inputType="textPersonName"
+                android:textColorLink="@color/colorPrimary" />
+
+        </LinearLayout>
+
+        <TextView
             android:id="@+id/tbxHeureDebut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/colorAccent"
-            android:ems="10"
-            android:hint="Heure de Début"
-            android:inputType="textPersonName"
-            android:textColorLink="@color/colorPrimary" />
+            android:layout_marginTop="15dp"
+            android:background="@drawable/custom_textview"
+            android:clickable="true"
+            android:gravity="center_vertical|center"
+            android:onClick="showTimePickerStart"
+            android:text="Selectionner une heure de début..."
+            android:textColor="@color/texte_bouton_violet"
+            android:textSize="18sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/tbxHeureFin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/colorAccent"
-            android:ems="10"
-            android:hint="Heure de Fin"
-            android:inputType="textPersonName"
-            android:textColorLink="@color/colorPrimary" />
+            android:layout_marginTop="15dp"
+            android:background="@drawable/custom_textview"
+            android:clickable="true"
+            android:gravity="center_vertical|center"
+            android:onClick="showTimePickerEnd"
+            android:text="Selectionner une heure de fin..."
+            android:textColor="@color/texte_bouton_violet"
+            android:textSize="18sp" />
 
-        <Spinner
-            android:id="@+id/spinner_products"
+        <TextView
+            android:id="@+id/show_list_products"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:spinnerMode="dialog" />
+            android:layout_marginTop="15dp"
+            android:background="@drawable/custom_textview"
+            android:clickable="true"
+            android:gravity="center_vertical|center"
+            android:onClick="showDialog"
+            android:text="Selectionner un produit..."
+            android:textColor="@color/texte_bouton_violet"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/lblPresence"
@@ -122,6 +177,7 @@
                 android:weightSum="1">
 
                 <RadioGroup
+                    android:id="@+id/jour_semaine"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -220,7 +276,8 @@
             android:layout_marginBottom="30dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/custom_button"
-            android:text="Ajouter un food truck" />
+            android:text="Ajouter un food truck"
+            android:onClick="onClickAddNewFoodTruck"/>
     </LinearLayout>
 
 </ScrollView>

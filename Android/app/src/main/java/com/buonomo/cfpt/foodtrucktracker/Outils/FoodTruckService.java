@@ -23,7 +23,7 @@ public class FoodTruckService {
     /**
      * Interface d'appel pour la recupération de la liste de food truck
      */
-    public interface Callbacks{
+    public interface CallbacksLstFoodTrucks {
         void onResponse(List<FoodTruck> camions);
         void onFailure();
     }
@@ -34,8 +34,8 @@ public class FoodTruckService {
      * @param latitude latitude de l'utilisateur
      * @param longitude longitude de l'utilisateur
      */
-    public static void getFoodTrucks(FoodTruckService.Callbacks callback, double latitude, double longitude){
-        final WeakReference<FoodTruckService.Callbacks> callbacksWeakReference = new WeakReference<FoodTruckService.Callbacks>(callback);
+    public static void getFoodTrucks(CallbacksLstFoodTrucks callback, double latitude, double longitude){
+        final WeakReference<CallbacksLstFoodTrucks> callbacksWeakReference = new WeakReference<CallbacksLstFoodTrucks>(callback);
 
 
         ServiceAccess serviceAccess = ServiceAccess.retrofitTruck.create(ServiceAccess.class);
@@ -64,6 +64,47 @@ public class FoodTruckService {
             public void onFailure(retrofit2.Call<List<FoodTruck>> call, Throwable t) {
                 if (callbacksWeakReference.get() != null){
                     callbacksWeakReference.get().onFailure();
+                }
+            }
+        });
+    }
+
+    public interface CallbacksCreateFoodTruck{
+        void onResponse(String ok);
+        void onFailure();
+    }
+
+    public static void createFoodTruck(CallbacksCreateFoodTruck callbacksCreateFoodTruck, String name, double lat, double lon, String startTime, String endTime, String weekDay, int idOwner, String contact, String image, int rating, String ids){
+        final WeakReference<CallbacksCreateFoodTruck> callbacksWeakReference = new WeakReference<CallbacksCreateFoodTruck>(callbacksCreateFoodTruck);
+
+
+        ServiceAccess serviceAccess = ServiceAccess.retrofitCreateFoodTruck.create(ServiceAccess.class);
+
+        retrofit2.Call<String> call = serviceAccess.createFoodTruck(name,lat, lon,startTime, endTime, weekDay, idOwner, contact, image, rating, ids);
+
+        call.enqueue(new Callback<String>() {
+            /**
+             * Réponse positive du service web
+             * @param call requête de la fonction de récupération de données
+             * @param response réponse donnée par le service
+             */
+            @Override
+            public void onResponse(retrofit2.Call<String> call, Response<String> response) {
+                if (callbacksWeakReference.get() != null){
+                    callbacksWeakReference.get().onResponse(response.body());
+                }
+            }
+
+            /**
+             * Réponse négative du service web
+             * @param call requête de la fonction de récupération de données
+             * @param t réponse jetable
+             */
+            @Override
+            public void onFailure(retrofit2.Call<String> call, Throwable t) {
+                if (callbacksWeakReference.get() != null){
+                    callbacksWeakReference.get().onFailure();
+                    System.out.println(t.getMessage());
                 }
             }
         });

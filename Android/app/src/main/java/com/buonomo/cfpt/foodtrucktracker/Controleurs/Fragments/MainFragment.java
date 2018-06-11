@@ -27,7 +27,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.buonomo.cfpt.foodtrucktracker.Controleurs.Activitiees.Map;
-import com.buonomo.cfpt.foodtrucktracker.Controleurs.Activitiees.MainActivity;
 import com.buonomo.cfpt.foodtrucktracker.Models.FoodTruck;
 import com.buonomo.cfpt.foodtrucktracker.Outils.GpsUtilisateur;
 import com.buonomo.cfpt.foodtrucktracker.Outils.ItemClickSupport;
@@ -41,7 +40,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainFragment extends Fragment implements FoodTruckAdapter.Listener, FoodTruckService.Callbacks{
+
+public class MainFragment extends Fragment implements FoodTruckAdapter.Listener, FoodTruckService.CallbacksLstFoodTrucks {
 
     // Éléments de la vue
     @BindView(R.id.mainRecyclerView) RecyclerView recyclerView;
@@ -80,7 +80,7 @@ public class MainFragment extends Fragment implements FoodTruckAdapter.Listener,
      * Execute la requête pour la récupération des food trucks
      */
     private void executeHttpRequestWithRetrofit() {
-        final Location l = GpsUtilisateur.gps(MainActivity.getContext());
+        final Location l = GpsUtilisateur.gps(getContext());
         FoodTruckService.getFoodTrucks(MainFragment.this, l.getLatitude(), l.getLongitude());
     }
 
@@ -114,7 +114,7 @@ public class MainFragment extends Fragment implements FoodTruckAdapter.Listener,
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                 FoodTruck camion = adapter.getFoodTruck(position);
-                Intent i = new Intent(MainActivity.getContext(), Map.class);
+                Intent i = new Intent(getContext(), Map.class);
                 i.putExtra("truck", camion);
                 startActivity(i);
             }

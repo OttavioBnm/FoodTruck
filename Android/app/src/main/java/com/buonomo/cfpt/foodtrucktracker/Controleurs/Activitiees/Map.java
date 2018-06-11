@@ -74,7 +74,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         ButterKnife.bind(this);
         Intent intent = getIntent();
         foodTruck = (FoodTruck) getIntent().getSerializableExtra("truck");
-        owner = (Owner) getIntent().getExtras().getSerializable("owner");
+        owner = (Owner) intent.getExtras().getSerializable("owner");
         if (owner!= null){
             addToMyTrucks.setVisibility(View.VISIBLE);
         }

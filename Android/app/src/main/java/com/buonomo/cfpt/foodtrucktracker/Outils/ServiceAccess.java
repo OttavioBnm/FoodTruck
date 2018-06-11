@@ -54,4 +54,38 @@ public interface ServiceAccess {
             .client(Authentication.getCredentials())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
+
+    @POST("proprietaires/nouveau.php")
+    @FormUrlEncoded
+    Call<Owner> createOwner(
+            @Field("Nom") String name,
+            @Field("Prenom") String firstname,
+            @Field("Pseudo") String username,
+            @Field("Courriel") String email,
+            @Field("MotDePasse") String password
+    );
+    Retrofit retrofitCreateOwner = new Retrofit.Builder()
+            .baseUrl("http://10.134.99.39/rest/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
+    @POST("camions/nouveau.php")
+    @FormUrlEncoded
+    Call<String> createFoodTruck(
+            @Field("nomFoodTruck") String name,
+            @Field("latFoodTruck") double lat,
+            @Field("lonFoodTruck") double lon,
+            @Field("heureDebutFoodTruck") String startTime,
+            @Field("heureFinFoodTruck") String endTime,
+            @Field("jourSemaineFoodTruck") String weekDay,
+            @Field("idProprietaireFoodTruck") int idOwner,
+            @Field("contactFoodTruck") String contact,
+            @Field("imageFoodTruck") String image,
+            @Field("noteFoodTruck") int rating,
+            @Field("idProduits") String ids
+    );
+    Retrofit retrofitCreateFoodTruck = new Retrofit.Builder()
+            .baseUrl("http://10.134.99.39/rest/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
 }
