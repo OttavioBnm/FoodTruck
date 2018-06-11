@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Projet       : Food Truck Tracker (service web)
  * Nom          : camions/nouveau.php
@@ -10,8 +11,10 @@
 
 // Require du PDO
 require "../pdo.php";
-require '../localisations/nouveauLieu.php';
-require '../horaire/nouvelHoraire.php';
+require '../localisations/nouveau.php';
+require '../horaire/nouveau.php';
+
+static $request = "";
 
 /**
  * Permet l'ajout d'un nouveau food truck à la base de données avec toutes les caracteristiques
@@ -27,10 +30,13 @@ require '../horaire/nouvelHoraire.php';
  * @param string $contact       - Contact pour un FT (peut être NULL)
  * @return boolean $flagOK      - Témoin pour l'ajout du FT (true ou false)
  */
-function creerFoodTruck($nom, $image, $lon, $lat, $heureDebut, $heureFin, $jourSemaine, $note, $proprietaire, $contact) {
+function creerFoodTruck($nom, $image, $lon, $lat, $heureDebut, $heureFin, $jourSemaine, $note, $proprietaire, $contact, $products) {
     $flagOk = true;
     if (empty($nom) || empty($lon) || empty($lat) || empty($heureDebut) || empty($heureFin) || empty($jourSemaine) || empty($image)) {
         return false;
+    }
+    if ($proprietaire === -1) {
+        $proprietaire === NULL;
     }
     try {
         $truckExiste = verifierSiFoodTruckExiste($nom);
@@ -38,8 +44,16 @@ function creerFoodTruck($nom, $image, $lon, $lat, $heureDebut, $heureFin, $jourS
         if ($idLieu !== FALSE) {
             if ($truckExiste === FALSE) {
                 $idFoodTruck = ajouterFoodTruck($nom, $image, $contact, $proprietaire);
-                creerHoraire($idFoodTruck, $idLieu, $heureDebut, $heureFin, $jourSemaine);
-                if (!ajouterNote($idFoodTruck, $note)) {
+                if ($idFoodTruck !== FALSE) {
+                    creerHoraire($idFoodTruck, $idLieu, $heureDebut, $heureFin, $jourSemaine);
+                    if (!ajouterNote($idFoodTruck, $note)) {
+                        $flagOk = FALSE;
+                    }
+                    $arrayOfIds = explode(";", $products);
+                    for ($index = 0; $index < count($arrayOfIds); $index++) {
+                        ajouterDesProduits($arrayOfIds[$index], $idFoodTruck);
+                    }
+                } else {
                     $flagOk = FALSE;
                 }
             } else if ($truckExiste === "Erreur") {
@@ -47,8 +61,11 @@ function creerFoodTruck($nom, $image, $lon, $lat, $heureDebut, $heureFin, $jourS
             } else {
                 creerHoraire($truckExiste, $idLieu, $heureDebut, $heureFin, $jourSemaine);
                 if (!ajouterNote($truckExiste, $note)) {
-                    var_dump($truckExiste);
                     $flagOk = FALSE;
+                }
+                $arrayOfIds = explode(";", $products);
+                for ($index = 0; $index < count($arrayOfIds); $index++) {
+                    ajouterDesProduits($arrayOfIds[$index], $truckExiste);
                 }
             }
         } else {
@@ -78,6 +95,7 @@ function ajouterFoodTruck($nom, $image, $contact, $idProprietaire) {
         $dbQuery->bindParam(':image', $image);
         $dbQuery->bindParam(':contact', $contact);
         $dbQuery->bindParam(':idProprietaire', $proprietaire);
+        $dbQuery->execute();
     } catch (Exception $exc) {
         return FALSE;
     }
@@ -87,6 +105,20 @@ function ajouterFoodTruck($nom, $image, $contact, $idProprietaire) {
     $array = $dbQuery->fetchAll(PDO::FETCH_ASSOC);
     foreach ($array as $value) {
         return $value['dernierId'];
+    }
+}
+
+function ajouterDesProduits($idProduit, $idFoodTruck) {
+        error_log(" OK ");
+    try {
+        $request = "INSERT INTO `TVEND`(`idFoodTruck`, `idProduit`) VALUES (:idFoodTruck, :idProduit)";
+        $connect = getDB();
+        $dbQuery = $connect->prepare($request);
+        $dbQuery->bindParam(':idFoodTruck', $idFoodTruck, PDO::PARAM_INT);
+        $dbQuery->bindParam(':idProduit', $idProduit, PDO::PARAM_INT);
+        $dbQuery->execute();
+    } catch (Exception $exc) {
+        error_log($exc);
     }
 }
 
@@ -117,7 +149,6 @@ function verifierSiFoodTruckExiste($nom) {
     }
 }
 
-
 /**
  * Ajoute un avis sur un food truck 
  * @param type $idFoodTruck - FT concerné
@@ -127,7 +158,6 @@ function verifierSiFoodTruckExiste($nom) {
 function ajouterNote($idFoodTruck, $note) {
     if ($note !== NULL) {
         try {
-            var_dump($note);
             $request = "INSERT INTO `TAVIS`(`Note`, `idFoodTruck`) VALUES (:note,:idFoodTruck)";
             $connect = getDB();
             $dbQuery = $connect->prepare($request);
@@ -152,9 +182,10 @@ $heureFinFoodTruck = filter_input(INPUT_POST, 'heureFinFoodTruck', FILTER_SANITI
 $jourSemaineFoodTruck = filter_input(INPUT_POST, 'jourSemaineFoodTruck', FILTER_SANITIZE_STRING);
 $idProprietaireFoodTruck = filter_input(INPUT_POST, 'idProprietaireFoodTruck', FILTER_VALIDATE_INT);
 $noteFoodTruck = filter_input(INPUT_POST, 'noteFoodTruck', FILTER_VALIDATE_INT);
+$produitsFoodTruck = filter_input(INPUT_POST, 'idProduits', FILTER_SANITIZE_STRING);
 
 // Ajout du food truck
-if (creerFoodTruck($nomFoodTruck, $imageFoodTruck, $lonFoodTruck, $latFoodTruck, $heureDebutFoodTruck, $heureFinFoodTruck, $jourSemaineFoodTruck, $noteFoodTruck, $idProprietaireFoodTruck, $contactFoodTruck)) {
+if (creerFoodTruck($nomFoodTruck, $imageFoodTruck, $lonFoodTruck, $latFoodTruck, $heureDebutFoodTruck, $heureFinFoodTruck, $jourSemaineFoodTruck, $noteFoodTruck, $idProprietaireFoodTruck, $contactFoodTruck, $produitsFoodTruck)) {
     echo json_encode("Succès");
 } else {
     header("HTTP/1.0 500 Intrnal Error");

@@ -9,7 +9,7 @@
  */
 
 require '../pdo.php';
-require "../produits/produitFoodTruck.php";
+require "../produits/produit.php";
 require "../avis/index.php";
 
 /**
@@ -37,7 +37,7 @@ class FoodTruck {
 function getFoodTrucks($latUtilisateur, $lonUtilisateur) {
     $today = date('l');
     $db = getDB();
-    $request = $db->prepare("SELECT TFOODTRUCK.idFoodTruck, Nom, Image, idProprietaire, TLOCALISATION.Latitude, TLOCALISATION.Longitude, DATE_FORMAT(TESTA.HoraireDebut, '%H:%i') AS 'HoraireDebut', DATE_FORMAT(TESTA.HoraireFin, '%H:%i') AS 'HoraireFin', TESTA.JourSemaine, TFOODTRUCK.Contact FROM TFOODTRUCK, TESTA, TLOCALISATION WHERE TESTA.JourSemaine = 'Thursday' AND TESTA.idFoodTruck = TFOODTRUCK.idFoodTruck AND TESTA.idLocalisation = TLOCALISATION.idLocalisation ORDER BY (6378137 * (PI()/2 - ASIN( SIN((PI()*:lat /180)) * SIN((PI()*TLOCALISATION.latitude/180)) + COS((PI()*:lon/180) -(PI()*TLOCALISATION.longitude/180)) * COS((PI()*TLOCALISATION.latitude/180)) *COS((PI()*:lat/180)))))");
+    $request = $db->prepare("SELECT TFOODTRUCK.idFoodTruck, Nom, Image, idProprietaire, TLOCALISATION.Latitude, TLOCALISATION.Longitude, DATE_FORMAT(TESTA.HoraireDebut, '%H:%i') AS 'HoraireDebut', DATE_FORMAT(TESTA.HoraireFin, '%H:%i') AS 'HoraireFin', TESTA.JourSemaine, TFOODTRUCK.Contact FROM TFOODTRUCK, TESTA, TLOCALISATION WHERE TESTA.JourSemaine = :jSemaine AND TESTA.idFoodTruck = TFOODTRUCK.idFoodTruck AND TESTA.idLocalisation = TLOCALISATION.idLocalisation ORDER BY (6378137 * (PI()/2 - ASIN( SIN((PI()*:lat /180)) * SIN((PI()*TLOCALISATION.latitude/180)) + COS((PI()*:lon/180) -(PI()*TLOCALISATION.longitude/180)) * COS((PI()*TLOCALISATION.latitude/180)) *COS((PI()*:lat/180)))))");
     $request->bindParam('jSemaine', $today, PDO::PARAM_STR);
     $request->bindParam('lat', $latUtilisateur);
     $request->bindParam('lon', $lonUtilisateur);

@@ -3,12 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/BUONOMOO_INFO/Documents/NetBeansProjects/webService/produits/produit.php</file>
-            <file>file:/C:/Users/BUONOMOO_INFO/Documents/NetBeansProjects/webService/avis/nouveau.php</file>
-            <file>file:/C:/Users/BUONOMOO_INFO/Documents/NetBeansProjects/webService/horaire/nouveau.php</file>
-            <file>file:/C:/Users/BUONOMOO_INFO/Documents/NetBeansProjects/webService/localisations/nouveau.php</file>
-            <file>file:/C:/Users/BUONOMOO_INFO/Documents/NetBeansProjects/webService/proprietaires/nouveau.php</file>
-            <file>file:/C:/Users/BUONOMOO_INFO/Documents/NetBeansProjects/webService/proprietaires/approprierFoodTruck.php</file>
+            <file>file:/C:/Users/BUONOMOO_INFO/Documents/NetBeansProjects/webService/camions/nouveau.php</file>
+            <file>file:/C:/Users/BUONOMOO_INFO/Documents/NetBeansProjects/webService/camions/index.php</file>
         </group>
     </open-files>
 </project-private>

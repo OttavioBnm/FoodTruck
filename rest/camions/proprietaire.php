@@ -10,7 +10,7 @@
 
 // Require pour le script
 require '../pdo.php';
-require "../produits/produitFoodTruck.php";
+require "../produits/produit.php";
 require "../avis/index.php";
 
 /**

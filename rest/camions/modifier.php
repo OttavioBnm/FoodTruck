@@ -9,7 +9,7 @@
  */
 
 // require du scripte d'ajout de localisation
-require '../localisations/nouveauLieu.php';
+require '../localisations/nouveau.php';
 
 /**
  * Modifie un food truck sur la base de données

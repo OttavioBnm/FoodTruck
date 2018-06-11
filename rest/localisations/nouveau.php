@@ -8,9 +8,6 @@
  * Version      : 1.0
  */
 
-// require du pdo
-require '../pdo.php';
-
 /**
  * Ajoute un lieu à la base de données ou récupère l'id d'un lieu existant
  * @param double $lat   - Latitude du lieu
