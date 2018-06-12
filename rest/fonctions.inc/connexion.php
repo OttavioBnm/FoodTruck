@@ -27,7 +27,7 @@ function connexionApplication() {
         $data = $dbQuery->fetchAll(PDO::FETCH_ASSOC);
         $isCo = (count($data) > 0) ? json_encode($data) : header("HTTP/1.1 403 Forbidden");
     } catch (Exception $e) {
-        return FALSE;
+        header("HTTP/1.1 403 Forbidden");
     }
     return $isCo;
 }

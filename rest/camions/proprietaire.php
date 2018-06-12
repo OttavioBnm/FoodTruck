@@ -39,7 +39,7 @@ class FoodTruck {
 function getFoodTrucksSelonProprieatire($idProprietaire) {
     try {
         $db = getDB();
-        $request = $db->prepare("SELECT TFOODTRUCK.idFoodTruck, Nom, Image, idProprietaire, TLOCALISATION.Latitude, TLOCALISATION.Longitude, DATE_FORMAT(TESTA.HoraireDebut, '%H:%i') AS 'HoraireDebut', DATE_FORMAT(TESTA.HoraireFin, '%H:%i') AS 'HoraireFin', TESTA.JourSemaine, TFOODTRUCK.Contact FROM TFOODTRUCK, TESTA, TLOCALISATION WHERE TESTA.idFoodTruck = TFOODTRUCK.idFoodTruck AND TESTA.idLocalisation = TLOCALISATION.idLocalisation AND TFOODTRUCK.idProprietaire = :idProprietaire");
+        $request = $db->prepare("SELECT * FROM TFOODTRUCK WHERE TFOODTRUCK.idProprietaire = :idProprietaire");
         $request->bindParam('idProprietaire', $idProprietaire, PDO::PARAM_INT);
         $request->execute();
         $data = $request->fetchAll(PDO::FETCH_ASSOC);

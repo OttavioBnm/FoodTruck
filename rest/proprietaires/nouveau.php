@@ -32,6 +32,7 @@ function ajouterProprietaire($nom, $prenom, $pseudo, $courriel, $motDePasse) {
             $request->bindParam(':courriel', $courriel, PDO::PARAM_STR);
             $request->bindParam(':motDePasse', $motDePasse, PDO::PARAM_STR);
             $request->execute();
+            json_encode("Réussi");
             header("HTTP/1.1 201 Created");
         } catch (Exception $exc) {
             header("HTTP/1.1 500 Internal Server Error");
