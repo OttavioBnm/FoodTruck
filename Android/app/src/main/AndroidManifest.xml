@@ -13,6 +13,8 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -46,13 +48,17 @@
             android:name=".Controleurs.Activitiees.Map"
             android:label="@string/title_activity_carte"
             android:screenOrientation="portrait" />
-        <activity android:name=".Controleurs.Activitiees.AddTruck"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Controleurs.Activitiees.AddTruck"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Controleurs.Activitiees.Login"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait" />
-        <activity android:name=".Controleurs.Activitiees.CreateAccount"></activity>
+        <activity android:name=".Controleurs.Activitiees.CreateAccount" />
+        <activity android:name=".Controleurs.Activitiees.OwnerTruck" />
+        <activity android:name=".Controleurs.Activitiees.Report" />
+        <activity android:name=".Controleurs.Activitiees.ManageTruckInfo"></activity>
     </application>
 
 </manifest>

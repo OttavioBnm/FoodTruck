@@ -28,7 +28,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -40,6 +39,7 @@ import android.widget.Toast;
 
 import com.buonomo.cfpt.foodtrucktracker.Models.Product;
 import com.buonomo.cfpt.foodtrucktracker.Outils.FoodTruckService;
+import com.buonomo.cfpt.foodtrucktracker.Outils.ImageService;
 import com.buonomo.cfpt.foodtrucktracker.Outils.ProductsService;
 import com.buonomo.cfpt.foodtrucktracker.R;
 import com.google.android.gms.maps.model.LatLng;
@@ -54,11 +54,11 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.ResponseBody;
 
-import static com.buonomo.cfpt.foodtrucktracker.Outils.GpsUtilisateur.stopGPS;
+public class AddTruck extends AppCompatActivity implements ProductsService.Callbacks, FoodTruckService.CallbacksCreateFoodTruck, LocationListener, ImageService.Callbacks {
 
-public class AddTruck extends AppCompatActivity implements ProductsService.Callbacks, FoodTruckService.CallbacksCreateFoodTruck, LocationListener {
-
+    // Déclaration des vues XML
     @BindView(R.id.tbxNomCamion)
     TextView truckName;
     @BindView(R.id.tbxAdresseCamion)
@@ -73,8 +73,6 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
     TextView truckEndTime;
     @BindView(R.id.ratingNote)
     RatingBar truckEvaluation;
-    @BindView(R.id.btnAjouterCamion)
-    Button addTruckButton;
     @BindView(R.id.show_list_products)
     TextView showProducts;
     @BindView(R.id.imgCamionAAjouter)
@@ -88,6 +86,7 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
     @BindView(R.id.tbxContact)
     TextView truckContact;
 
+    // Champs
     private String[] tableProducts;
     private boolean[] checkedItems;
     private ArrayList<Integer> userItems = new ArrayList<>();
@@ -96,9 +95,12 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
     private LocationManager lm;
     private LatLng latLng;
     private String value = "Monday";
-    private List<Product> lstSelectedProduct = new ArrayList<>();
-    private List<Product> lstProduct;
+    private String path = "";
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,6 +111,9 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
         this.radioManagment();
     }
 
+    /**
+     * Gestion des clicks sur les radio boutons
+     */
     public void radioManagment(){
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
@@ -154,21 +159,31 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
         return true;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public boolean onSupportNavigateUp() {
         finish();
         return super.onSupportNavigateUp();
     }
 
+    /**
+     *
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
 
+    /**
+     * Ajoute un nouveau food truck et vérifie les infos saisies
+     */
     public void addNewFoodTruck(){
         boolean cancel = false;
         View focusView = null;
-        String nameImage = "";
+        String imgName  =getNameOfImage(path);
         if (TextUtils.isEmpty(truckName.getText())){
             cancel = true;
             truckName.setError(getString(R.string.error_field_required));
@@ -199,12 +214,6 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
             focusView = truckEndTime;
             truckEndTime.setError(getString(R.string.error_field_required));
         }
-        if (img.getDrawable() == null){
-            nameImage = String.valueOf(img.getTag());
-        }
-        else{
-            nameImage = String.valueOf(img.getTag());
-        }
 
         if (cancel){
             focusView.requestFocus();
@@ -221,17 +230,45 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
                     value,
                     -1,
                     truckContact.getText().toString(),
-                    nameImage,
+                    imgName,
                     Math.round(truckEvaluation.getRating()));
+            ImageService.uploadImage(this, path);
             pb.setVisibility(View.INVISIBLE);
             formLocation.setVisibility(View.VISIBLE);
         }
     }
 
+    public String getNameOfImage(String path){
+        String[] splittedPath = path.split("/");
+        String newName;
+        if (splittedPath[splittedPath.length-1].contains("_")){
+            newName = splittedPath[splittedPath.length-1].replace("_", "-");
+        }else {
+            newName =splittedPath[splittedPath.length-1];
+        }
+        return newName;
+    }
+
+    /**
+     * Requête de la liste des produits
+     */
     public void executeRequestProducts(){
         ProductsService.getProducts(this);
     }
 
+    /**
+     * Envoie de la requête pour l'ajout de food truck
+     * @param name Nom du food truck
+     * @param lat  Latitude du food truck
+     * @param lon Longitude du food truck
+     * @param startTime Heure de début de vente du food trucks
+     * @param endTime Heure de fin de vente du food trucks
+     * @param weekDay Jour de la vente
+     * @param idOwner Id du propriétaire
+     * @param contact Contact du food truck
+     * @param image Image du food truck
+     * @param rating Note du food truck
+     */
     public void executeFoodTruckCreation( String name, double lat, double lon, String startTime, String endTime, String weekDay, int idOwner, String contact, String image, int rating){
         String idProducts = "";
         for (int i = 0; i< userItems.size(); i++){
@@ -244,9 +281,12 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
         FoodTruckService.createFoodTruck(this, name, lat, lon, startTime, endTime, weekDay, idOwner, contact, image, rating, idProducts);
     }
 
+    /**
+     * Récupération de la liste des produits
+     * @param products liste des produits
+     */
     @Override
     public void onResponse(List<Product> products) {
-        lstProduct = products;
         tableProducts = new String[products.size()];
         for (int i = 0; i <products.size(); i++) {
             tableProducts[i] = products.get(i).toString();
@@ -254,11 +294,21 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
         checkedItems = new boolean[tableProducts.length];
     }
 
+    /**
+     * Récupération du commentaire du server lors de l'ajout de food truck
+     * @param ok Réponse du server
+     */
     @Override
     public void onResponse(String ok) {
-
+        Intent i = new Intent(AddTruck.this, MainActivity.class);
+        startActivity(i);
     }
 
+    /**
+     * Converti une adresse en latitude longitude
+     * @param addressTruck Adresse à convertir
+     * @return une latitude longitude
+     */
     private LatLng convertAddress(String addressTruck){
         Geocoder coder = new Geocoder(this);
         List<Address> address;
@@ -289,10 +339,22 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
     }
 
     @Override
+    public void onResponse(ResponseBody responseBody) {
+
+    }
+
+    /**
+     * Erreur de création du food truck
+     */
+    @Override
     public void onFailure() {
         Log.e("Creation Food Truck", "ERROR");
     }
 
+    /**
+     * Affiche le dialogue qui permet de choisir les produits vendus par le nouveau food truck
+     * @param view
+     */
     public void showDialog(View view) {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         mBuilder.setTitle("Produits disponibles");
@@ -345,12 +407,22 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
         mDialog.show();
     }
 
+    /**
+     * Démarre une instance qui permet de prendre une photo dans la gallerie
+     * @param v vue
+     */
     public void onClickProfilePicture(View v){
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
         startActivityForResult(photoPickerIntent, 0);
     }
 
+    /**
+     * Récupération de l'image sélectionnée
+     * @param reqCode Code de demande
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);
@@ -360,7 +432,7 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                 img.setImageBitmap(selectedImage);
-
+                path = this.getRealPathFromURI(imageUri);
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR)
                         != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(this,
@@ -377,7 +449,11 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
         }
     }
 
-    // And to convert the image URI to the direct file system path of the image file
+    /**
+     * Converti l'image en chemain de fichier
+     * @param contentUri chemain de l'image
+     * @return
+     */
     public String getRealPathFromURI(Uri contentUri) {
 
         // can post image
@@ -393,6 +469,10 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
         return cursor.getString(column_index);
     }
 
+    /**
+     * Affiche le time picker pour la récupération de l'heure de début
+     * @param view vue
+     */
     public void showTimePickerStart(View view) {
         Calendar currentTime = Calendar.getInstance();
         int hour = currentTime.get(Calendar.HOUR_OF_DAY);
@@ -408,6 +488,10 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
         mTimePicker.show();
     }
 
+    /**
+     * Affiche le time picker pour la récupération de l'heure de fin
+     * @param view vue
+     */
     public void showTimePickerEnd(View view) {
         Calendar currentTime = Calendar.getInstance();
         int hour = currentTime.get(Calendar.HOUR_OF_DAY);
@@ -423,6 +507,10 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
         mTimePicker.show();
     }
 
+    /**
+     * Récupération de la position de l'utilisateur
+     * @param view vue
+     */
     @SuppressLint("MissingPermission")
     public void getCurrentLocation(View view) {
         final Handler h = new Handler();
@@ -443,7 +531,7 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
                         truckAddress.setText(adresse[0]);
                         truckPostalCode.setText(postalCodeCity[1]);
                         truckCity.setText(postalCodeCity[2]);
-                        stopGPS();
+                        lm.removeUpdates(AddTruck.this);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -455,6 +543,10 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
         runnable.run();
     }
 
+    /**
+     * Met à jour la position lors du changement de la localisation
+     * @param location localisation GPS
+     */
     @Override
     public void onLocationChanged(Location location) {
         latLng = new LatLng(location.getLatitude(), location.getLongitude());
@@ -475,6 +567,10 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
 
     }
 
+    /**
+     * Ajoute un nouveau food truck lors du clic sur le bouton
+     * @param view vue
+     */
     public void onClickAddNewFoodTruck(View view) {
         this.addNewFoodTruck();
     }

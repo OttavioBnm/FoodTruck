@@ -17,7 +17,6 @@
 
         <ProgressBar
             android:id="@+id/progressBar_current_location"
-            style="?android:attr/progressBarStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone" />
@@ -191,13 +190,6 @@
                         android:text="Lun." />
 
                     <RadioButton
-                        android:id="@+id/rbMercredi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="@color/colorPrimaryDark"
-                        android:text="Mer." />
-
-                    <RadioButton
                         android:id="@+id/rbMardi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -205,12 +197,19 @@
                         android:text="Mar." />
 
                     <RadioButton
-                        android:id="@+id/rbSamedi"
+                        android:id="@+id/rbMercredi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/colorPrimaryDark"
+                        android:text="Mer." />
+
+                    <RadioButton
+                        android:id="@+id/rbJeudi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:buttonTint="@color/colorPrimaryDark"
-                        android:text="Sam." />
+                        android:text="Jeu." />
 
                     <RadioButton
                         android:id="@+id/rbVendredi"
@@ -222,12 +221,12 @@
                         android:textAllCaps="false" />
 
                     <RadioButton
-                        android:id="@+id/rbJeudi"
+                        android:id="@+id/rbSamedi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:buttonTint="@color/colorPrimaryDark"
-                        android:text="Jeu." />
+                        android:text="Sam." />
 
                     <RadioButton
                         android:id="@+id/rbDimanche"

@@ -11,6 +11,7 @@
 package com.buonomo.cfpt.foodtrucktracker.Controleurs.Fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +23,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 import com.buonomo.cfpt.foodtrucktracker.Models.FoodTruck;
+import com.buonomo.cfpt.foodtrucktracker.Outils.FoodTruckService;
 import com.buonomo.cfpt.foodtrucktracker.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailsFragment extends android.support.v4.app.Fragment {
+public class DetailsFragment extends android.support.v4.app.Fragment implements FoodTruckService.CallbackAddEvaluation {
     // Chmaps des vues xml
     @BindView(R.id.textview_detail_contact)
     TextView textViewContact;
@@ -42,6 +44,7 @@ public class DetailsFragment extends android.support.v4.app.Fragment {
 
     // Attributs
     private FoodTruck truck;
+    private boolean ratingFlag = false;
 
     /**
      * Constructeur
@@ -94,5 +97,36 @@ public class DetailsFragment extends android.support.v4.app.Fragment {
         }else{
             ratingBarDetail.setRating(0.0f);
         }
+        ratingBarDetail.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                ratingFlag = true;
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        ratingFlag = false;
+        super.onDestroy();
+    }
+
+    public void executeAddRatingWithRetrofit(int rate, int idFoodTruck){
+        FoodTruckService.addEvaluation(this, rate, idFoodTruck);
+    }
+    public void giveRating(){
+        if (ratingFlag){
+            executeAddRatingWithRetrofit(Math.round(ratingBarDetail.getRating()), Integer.parseInt(truck.getIdFoodTruck()));
+        }
+    }
+
+    @Override
+    public void OnResponse(Void response) {
+        Log.i("SUCCESS", "RATING ADDED");
+    }
+
+    @Override
+    public void OnFailure() {
+        Log.e("FAILED", "RATING NOT ADDED");
     }
 }

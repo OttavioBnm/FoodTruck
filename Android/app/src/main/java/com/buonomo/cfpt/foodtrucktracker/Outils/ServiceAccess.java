@@ -15,13 +15,19 @@ import com.buonomo.cfpt.foodtrucktracker.Models.Owner;
 import com.buonomo.cfpt.foodtrucktracker.Models.Product;
 
 import java.util.List;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface ServiceAccess {
@@ -57,7 +63,7 @@ public interface ServiceAccess {
 
     @POST("proprietaires/nouveau.php")
     @FormUrlEncoded
-    Call<Owner> createOwner(
+    Call<Void> createOwner(
             @Field("Nom") String name,
             @Field("Prenom") String firstname,
             @Field("Pseudo") String username,
@@ -85,6 +91,55 @@ public interface ServiceAccess {
             @Field("idProduits") String ids
     );
     Retrofit retrofitCreateFoodTruck = new Retrofit.Builder()
+            .baseUrl("http://10.134.99.39/rest/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
+    @POST("camions/proprietaire.php")
+    @FormUrlEncoded
+    Call<List<FoodTruck>> getFoodTruckByOwner(@Field("idProprietaire") int idOwner);
+    Retrofit retrofitTruckByOwner = new Retrofit.Builder()
+            .baseUrl("http://10.134.99.39/rest/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(Authentication.getCredentials())
+            .build();
+
+    @Multipart
+    @POST("fonctions.inc/sauvegarderImage.php")
+    Call<ResponseBody> postImage(
+            @Part MultipartBody.Part image,
+            @Part("name") RequestBody name);
+    Retrofit retrofitUploadImage = new Retrofit.Builder()
+            .baseUrl("http://10.134.99.39/rest/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
+    @POST("avis/nouveau.php")
+    @FormUrlEncoded
+    Call<Void> addNewEvaluation(
+            @Field("note") int ratingPoints,
+            @Field("idFoodTruck") int idFoodTruck);
+    Retrofit retrofitAddEvaluation = new Retrofit.Builder()
+            .baseUrl("http://10.134.99.39/rest/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
+    @POST("camions/modifier.php")
+    @FormUrlEncoded
+    Call<Void> updateFoodTruckInfos(
+            @Field("nomFoodTruck") String truckName,
+            @Field("imageFoodTruck") String truckImage,
+            @Field("contactFoodTruck") String truckContact,
+            @Field("idFoodTruck") int idFoodTruck);
+    Retrofit retrofitUpdateFoodTruckInfos = new Retrofit.Builder()
+            .baseUrl("http://10.134.99.39/rest/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
+    @GET
+    Call<List<String>> getLocationsFoodTruck(
+            @Query("idFoodTruck") int idFoodTruck);
+    Retrofit retrofitGetLocationsFoodTruck = new Retrofit.Builder()
             .baseUrl("http://10.134.99.39/rest/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();

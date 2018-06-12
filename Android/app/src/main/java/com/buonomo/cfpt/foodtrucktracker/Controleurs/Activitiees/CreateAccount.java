@@ -1,5 +1,6 @@
 package com.buonomo.cfpt.foodtrucktracker.Controleurs.Activitiees;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.buonomo.cfpt.foodtrucktracker.Models.Owner;
 import com.buonomo.cfpt.foodtrucktracker.Outils.OwnerService;
@@ -111,8 +113,12 @@ public class CreateAccount extends AppCompatActivity implements OwnerService.Cal
     }
 
     @Override
-    public void onResponse(Owner owner) {
+    public void onResponse(Void owner) {
         Log.i("CREATE", "SUCCESS");
+        Intent i = new Intent(CreateAccount.this, Login.class);
+        startActivity(i);
+        Toast.makeText(Login.getContext(), "OK", Toast.LENGTH_SHORT);
+        finish();
     }
 
     @Override

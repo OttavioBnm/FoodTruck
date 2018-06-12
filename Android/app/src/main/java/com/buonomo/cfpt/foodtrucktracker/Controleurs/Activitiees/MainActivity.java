@@ -12,6 +12,9 @@ package com.buonomo.cfpt.foodtrucktracker.Controleurs.Activitiees;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,6 +22,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import com.buonomo.cfpt.foodtrucktracker.Controleurs.Fragments.MainFragment;
+import com.buonomo.cfpt.foodtrucktracker.Controleurs.Fragments.OwnerFragment;
 import com.buonomo.cfpt.foodtrucktracker.Models.Owner;
 import com.buonomo.cfpt.foodtrucktracker.R;
 
@@ -79,12 +83,18 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(login);
                 return true;
             case R.id.info:
-
+                Intent reportIntent = new Intent(MainActivity.this, Report.class);
+                startActivity(reportIntent);
+                return true;
+            case R.id.gerer:
+                OwnerFragment.setOwner(owner);
+                Intent intentOwner = new Intent(MainActivity.this, OwnerTruck.class);
+                startActivity(intentOwner);
                 return true;
             case R.id.deconnexion:
                 Intent intent = new Intent(MainActivity.this, MainActivity.class);
                 startActivity(intent);
-                //android.os.Process.killProcess(android.os.Process.myPid());
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -3,6 +3,7 @@ package com.buonomo.cfpt.foodtrucktracker.Controleurs.Activitiees;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -63,6 +64,8 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor>,
     @BindView(R.id.btnCreerUnCompte)
     Button btnCreer;
 
+    private static Context c;
+
     @Override
     public boolean onSupportNavigateUp() {
         finish();
@@ -74,6 +77,7 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor>,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        c = getApplicationContext();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.tbxEmail);
@@ -319,6 +323,10 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor>,
         };
 
         int ADDRESS = 0;
+    }
+
+    public static Context getContext(){
+        return c;
     }
 }
 

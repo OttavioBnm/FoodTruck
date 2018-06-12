@@ -15,7 +15,7 @@ public class OwnerService {
      * Interface d'appel pour la recupération de la liste de food truck
      */
     public interface Callbacks{
-        void onResponse(Owner owner);
+        void onResponse(Void owner);
         void onFailure();
     }
 
@@ -30,16 +30,16 @@ public class OwnerService {
 
         ServiceAccess serviceAccess = ServiceAccess.retrofitCreateOwner.create(ServiceAccess.class);
 
-        retrofit2.Call<Owner> call = serviceAccess.createOwner(nom, prenom, pseudo, email, password);
+        retrofit2.Call<Void> call = serviceAccess.createOwner(nom, prenom, pseudo, email, password);
 
-        call.enqueue(new Callback<Owner>() {
+        call.enqueue(new Callback<Void>() {
             /**
              * Réponse positive du service web
              * @param call requête de la fonction de récupération de données
              * @param response réponse donnée par le service
              */
             @Override
-            public void onResponse(retrofit2.Call<Owner> call, Response<Owner> response) {
+            public void onResponse(retrofit2.Call<Void> call, Response<Void> response) {
                 if (callbacksWeakReference.get() != null){
                     callbacksWeakReference.get().onResponse(response.body());
                 }
@@ -51,10 +51,10 @@ public class OwnerService {
              * @param t réponse jetable
              */
             @Override
-            public void onFailure(retrofit2.Call<Owner> call, Throwable t) {
+            public void onFailure(retrofit2.Call<Void> call, Throwable t) {
                 if (callbacksWeakReference.get() != null){
                     callbacksWeakReference.get().onFailure();
-                    System.out.print(t.getMessage());
+                    t.printStackTrace();
                 }
             }
         });

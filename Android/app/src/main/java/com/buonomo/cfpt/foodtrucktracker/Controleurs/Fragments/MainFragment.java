@@ -28,7 +28,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.buonomo.cfpt.foodtrucktracker.Controleurs.Activitiees.Map;
 import com.buonomo.cfpt.foodtrucktracker.Models.FoodTruck;
-import com.buonomo.cfpt.foodtrucktracker.Outils.GpsUtilisateur;
+import com.buonomo.cfpt.foodtrucktracker.Outils.UserGPS;
 import com.buonomo.cfpt.foodtrucktracker.Outils.ItemClickSupport;
 import com.buonomo.cfpt.foodtrucktracker.Outils.FoodTruckService;
 import com.buonomo.cfpt.foodtrucktracker.R;
@@ -80,7 +80,7 @@ public class MainFragment extends Fragment implements FoodTruckAdapter.Listener,
      * Execute la requête pour la récupération des food trucks
      */
     private void executeHttpRequestWithRetrofit() {
-        final Location l = GpsUtilisateur.gps(getContext());
+        final Location l = UserGPS.gps(getContext());
         FoodTruckService.getFoodTrucks(MainFragment.this, l.getLatitude(), l.getLongitude());
     }
 

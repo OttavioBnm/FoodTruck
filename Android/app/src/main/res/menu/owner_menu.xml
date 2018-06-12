@@ -8,7 +8,7 @@
             android:title="Gérer mes Food Truck" />
         <item
             android:id="@+id/info"
-            android:title="Info" />
+            android:title="Aide et informations" />
         <item
             android:id="@+id/deconnexion"
             android:title="Déconnexion" />

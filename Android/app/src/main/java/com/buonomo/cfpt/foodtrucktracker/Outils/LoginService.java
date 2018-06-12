@@ -43,8 +43,7 @@ public class LoginService {
                     if (callbacksWeakReference.get() != null){
                         callbacksWeakReference.get().onFailure();
                     }
-                }
-                if (callbacksWeakReference.get() != null){
+                } else {
                     callbacksWeakReference.get().onResponse(response.body());
                 }
             }

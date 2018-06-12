@@ -14,13 +14,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.RatingBar;
 
 import com.buonomo.cfpt.foodtrucktracker.Controleurs.Fragments.DetailsFragment;
 import com.buonomo.cfpt.foodtrucktracker.Models.FoodTruck;
 import com.buonomo.cfpt.foodtrucktracker.Models.Owner;
+import com.buonomo.cfpt.foodtrucktracker.Outils.FoodTruckService;
 import com.buonomo.cfpt.foodtrucktracker.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -62,6 +65,13 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        detailsFragment.giveRating();
+        finish();
+        super.onBackPressed();
+    }
+
     /**
      * Création de la vue d'affichage de la carte et des détails
      * @param savedInstanceState données de sauvegarde de la vue
@@ -92,6 +102,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
      */
     @Override
     public boolean onSupportNavigateUp() {
+        this.detailsFragment.giveRating();
         finish();
         return super.onSupportNavigateUp();
     }
