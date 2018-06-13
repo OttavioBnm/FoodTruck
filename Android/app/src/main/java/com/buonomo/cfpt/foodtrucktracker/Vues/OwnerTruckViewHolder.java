@@ -24,6 +24,8 @@ public class OwnerTruckViewHolder extends RecyclerView.ViewHolder implements Vie
     TextView textViewDistance;
     @BindView(R.id.imageCamion)
     ImageView imageView;
+    @BindView(R.id.remove_image)
+    ImageView remove;
 
     // Champ avec référence faible
     private WeakReference<OwnerTruckAdapter.Listener> callbackWeakRef;
@@ -46,6 +48,7 @@ public class OwnerTruckViewHolder extends RecyclerView.ViewHolder implements Vie
     public void updateWithTruck(FoodTruck camion, RequestManager glide, OwnerTruckAdapter.Listener callback) {
         this.textViewTitre.setText(camion.getNom());
         this.textViewDistance.setText("");
+        this.remove.setOnClickListener(this);
         glide.load("http://10.134.99.39/rest/img/" + camion.getImage()).apply(RequestOptions.circleCropTransform()).into(imageView);
         this.callbackWeakRef = new WeakReference<OwnerTruckAdapter.Listener>(callback);
     }

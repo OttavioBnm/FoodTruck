@@ -8,7 +8,7 @@ public class Owner implements Serializable
 {
     @SerializedName("idProprietaire")
     @Expose
-    private String idProprietaire;
+    private int idProprietaire;
     @SerializedName("Nom")
     @Expose
     private String nom;
@@ -25,11 +25,11 @@ public class Owner implements Serializable
     @Expose
     private String motDePasse;
 
-    public String getIdProprietaire() {
+    public int getIdProprietaire() {
         return idProprietaire;
     }
 
-    public void setIdProprietaire(String idProprietaire) {
+    public void setIdProprietaire(int idProprietaire) {
         this.idProprietaire = idProprietaire;
     }
 

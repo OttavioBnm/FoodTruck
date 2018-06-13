@@ -11,6 +11,7 @@
 package com.buonomo.cfpt.foodtrucktracker.Outils;
 
 import com.buonomo.cfpt.foodtrucktracker.Models.FoodTruck;
+import com.buonomo.cfpt.foodtrucktracker.Models.Owner;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -205,12 +206,12 @@ public class FoodTruckService {
         void OnFailure();
     }
 
-    public static void updateFoodTruckInfos(CallbackUpdateFoodTruck callbacksCreateFoodTruck, String truckName, String truckImage, String truckContact, int idFoodTruck){
+    public static void updateFoodTruckInfos(CallbackUpdateFoodTruck callbacksCreateFoodTruck, String truckName, String truckImage, String truckContact, int idFoodTruck, Owner o){
         final WeakReference<CallbackUpdateFoodTruck> callbacksWeakReference = new WeakReference<CallbackUpdateFoodTruck>(callbacksCreateFoodTruck);
 
 
         ServiceAccess serviceAccess = ServiceAccess.retrofitUpdateFoodTruckInfos.create(ServiceAccess.class);
-
+        Authentication.setHeaders(o.getCourriel(), o.getMotDePasse());
         retrofit2.Call<Void> call = serviceAccess.updateFoodTruckInfos(truckName, truckImage, truckContact, idFoodTruck);
 
         call.enqueue(new Callback<Void>() {
@@ -221,6 +222,49 @@ public class FoodTruckService {
              */
             @Override
             public void onResponse(retrofit2.Call<Void> call, Response<Void> response) {
+                if (callbacksWeakReference.get() != null){
+                    callbacksWeakReference.get().OnResponse(response.body());
+                }
+            }
+
+            /**
+             * Réponse négative du service web
+             * @param call requête de la fonction de récupération de données
+             * @param t réponse jetable
+             */
+            @Override
+            public void onFailure(retrofit2.Call<Void> call, Throwable t) {
+                if (callbacksWeakReference.get() != null){
+                    callbacksWeakReference.get().OnFailure();
+                    System.out.println(t.getMessage());
+                }
+            }
+        });
+    }
+
+    public interface CallbackRemoveFoodTruck{
+        void OnResponse(Void response);
+        void OnFailure();
+    }
+
+    public static void removeFoodTruckInfos(CallbackRemoveFoodTruck callbacksCreateFoodTruck, int idFoodTruck, String image, Owner o){
+        final WeakReference<CallbackRemoveFoodTruck> callbacksWeakReference = new WeakReference<CallbackRemoveFoodTruck>(callbacksCreateFoodTruck);
+
+
+        ServiceAccess serviceAccess = ServiceAccess.retrofitRemoveFoodTruck.create(ServiceAccess.class);
+
+        Authentication.setHeaders(o.getCourriel(), o.getMotDePasse());
+        retrofit2.Call<Void> call = serviceAccess.removeFoodTruck(idFoodTruck, image);
+
+        call.enqueue(new Callback<Void>() {
+            /**
+             * Réponse positive du service web
+             * @param call requête de la fonction de récupération de données
+             * @param response réponse donnée par le service
+             */
+            @Override
+            public void onResponse(retrofit2.Call<Void> call, Response<Void> response) {
+                int code = response.code();
                 if (callbacksWeakReference.get() != null){
                     callbacksWeakReference.get().OnResponse(response.body());
                 }

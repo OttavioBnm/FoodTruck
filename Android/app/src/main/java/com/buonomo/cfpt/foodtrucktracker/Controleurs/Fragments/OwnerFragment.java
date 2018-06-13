@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.buonomo.cfpt.foodtrucktracker.Controleurs.Activitiees.ManageTruckInfo;
+import com.buonomo.cfpt.foodtrucktracker.Controleurs.Activitiees.OwnerTruck;
 import com.buonomo.cfpt.foodtrucktracker.Models.FoodTruck;
 import com.buonomo.cfpt.foodtrucktracker.Models.Owner;
 import com.buonomo.cfpt.foodtrucktracker.Outils.FoodTruckService;
@@ -29,7 +30,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class OwnerFragment extends Fragment implements OwnerTruckAdapter.Listener, FoodTruckService.CallbacksOwnerFoodTrucks {
+public class OwnerFragment extends Fragment implements OwnerTruckAdapter.Listener, FoodTruckService.CallbacksOwnerFoodTrucks, FoodTruckService.CallbackRemoveFoodTruck {
 
     // Éléments de la vue
     @BindView(R.id.ownerRecyclerView)
@@ -71,7 +72,7 @@ public class OwnerFragment extends Fragment implements OwnerTruckAdapter.Listene
      * Execute la requête pour la récupération des food trucks
      */
     private void executeHttpRequestWithRetrofit() {
-        FoodTruckService.getFoodTruckByOwner(this, Integer.parseInt(owner.getIdProprietaire()), owner.getCourriel(), owner.getMotDePasse());
+        FoodTruckService.getFoodTruckByOwner(this, owner.getIdProprietaire(), owner.getCourriel(), owner.getMotDePasse());
     }
 
     /**
@@ -106,6 +107,7 @@ public class OwnerFragment extends Fragment implements OwnerTruckAdapter.Listene
                 FoodTruck camion = adapter.getFoodTruck(position);
                 Intent i = new Intent(getContext(), ManageTruckInfo.class);
                 i.putExtra("truck", camion);
+                i.putExtra("owner", OwnerTruck.getOwner());
                 startActivity(i);
             }
         });
@@ -134,7 +136,11 @@ public class OwnerFragment extends Fragment implements OwnerTruckAdapter.Listene
     @Override
     public void onClickDeleteButton(int position) {
         FoodTruck camion = adapter.getFoodTruck(position);
-        Toast.makeText(getContext(), "Supprimer : " + camion.getNom(), Toast.LENGTH_SHORT).show();
+        this.executeRemoveWithRetrofit(camion.getIdFoodTruck(), camion.getImage());
+    }
+
+    public void executeRemoveWithRetrofit(int idFoodTruck, String image){
+        FoodTruckService.removeFoodTruckInfos(this, idFoodTruck, image, owner);
     }
 
     /**
@@ -156,5 +162,15 @@ public class OwnerFragment extends Fragment implements OwnerTruckAdapter.Listene
 
     public static void setOwner(Owner o){
         owner = o;
+    }
+
+    @Override
+    public void OnResponse(Void response) {
+        this.executeHttpRequestWithRetrofit();
+    }
+
+    @Override
+    public void OnFailure() {
+
     }
 }

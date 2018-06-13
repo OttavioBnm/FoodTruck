@@ -134,13 +134,61 @@ public interface ServiceAccess {
     Retrofit retrofitUpdateFoodTruckInfos = new Retrofit.Builder()
             .baseUrl("http://10.134.99.39/rest/")
             .addConverterFactory(GsonConverterFactory.create())
+            .client(Authentication.getCredentials())
             .build();
 
-    @GET
+    @GET("localisations/foodTruck.php")
     Call<List<String>> getLocationsFoodTruck(
             @Query("idFoodTruck") int idFoodTruck);
     Retrofit retrofitGetLocationsFoodTruck = new Retrofit.Builder()
             .baseUrl("http://10.134.99.39/rest/")
             .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
+    @Multipart
+    @POST("localisations/modifier.php")
+    @FormUrlEncoded
+    Call<Void> updateLocationInfos(
+            @Field("latitude") double lat,
+            @Field("longitude") double lon,
+            @Field("idFoodTruck") double idFoodTruck,
+            @Field("jourSemaine") String day);
+    Retrofit retrofitUpdateLocation = new Retrofit.Builder()
+            .baseUrl("http://10.134.99.39/rest/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(Authentication.getCredentials())
+            .build();
+
+    @POST("proprietaires/approprierFoodTruck.php")
+    @FormUrlEncoded
+    Call<Void> appropriateFoodTruck(
+            @Field("idProprietaire") int idProprietaire,
+            @Field("idFoodTruck") int idFoodTruck);
+    Retrofit retrofitAppropriateFoodTruck = new Retrofit.Builder()
+            .baseUrl("http://10.134.99.39/rest/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(Authentication.getCredentials())
+            .build();
+
+    @POST("proprietaires/rendreFoodTruck.php")
+    @FormUrlEncoded
+    Call<Void> returnFoodTruck(
+            @Field("idProprietaire") int idProprietaire,
+            @Field("idFoodTruck") int idFoodTruck);
+    Retrofit retrofitReturnFoodTruck = new Retrofit.Builder()
+            .baseUrl("http://10.134.99.39/rest/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(Authentication.getCredentials())
+            .build();
+
+    @POST("camions/supprimer.php")
+    @FormUrlEncoded
+    Call<Void> removeFoodTruck(
+            @Field("idFoodTruck") int idFoodTruck,
+            @Field("image") String image);
+    Retrofit retrofitRemoveFoodTruck = new Retrofit.Builder()
+            .baseUrl("http://10.134.99.39/rest/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(Authentication.getCredentials())
             .build();
 }

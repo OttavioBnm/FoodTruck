@@ -24,6 +24,7 @@ import com.buonomo.cfpt.foodtrucktracker.Controleurs.Fragments.DetailsFragment;
 import com.buonomo.cfpt.foodtrucktracker.Models.FoodTruck;
 import com.buonomo.cfpt.foodtrucktracker.Models.Owner;
 import com.buonomo.cfpt.foodtrucktracker.Outils.FoodTruckService;
+import com.buonomo.cfpt.foodtrucktracker.Outils.OwnerService;
 import com.buonomo.cfpt.foodtrucktracker.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,10 +33,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class Map extends AppCompatActivity implements OnMapReadyCallback {
+public class Map extends AppCompatActivity implements OnMapReadyCallback, OwnerService.CallbacksAppropriate, OwnerService.CallbacksReturn {
 
     // Champs
     private GoogleMap mMap;
@@ -44,26 +47,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private Owner owner;
     @BindView(R.id.fab_add_to_my_trucks)
     FloatingActionButton addToMyTrucks;
-
-    /**
-     * Création de l'affichage du menu dans l'action bar de l'activitée
-     * @param menu Menu à afficher
-     * @return affiche le menu (oui/non)
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        if (extras == null){
-            inflater.inflate(R.menu.dropdown_menu, menu);
-        }
-        else{
-            owner = (Owner) getIntent().getExtras().getSerializable("owner");
-            inflater.inflate(R.menu.owner_menu, menu);
-        }
-        return true;
-    }
+    @BindView(R.id.fab_remove_to_my_trucks)
+    FloatingActionButton removeToMyTrucks;
 
     @Override
     public void onBackPressed() {
@@ -85,8 +70,12 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         Intent intent = getIntent();
         foodTruck = (FoodTruck) getIntent().getSerializableExtra("truck");
         owner = (Owner) intent.getExtras().getSerializable("owner");
-        if (owner!= null){
-            addToMyTrucks.setVisibility(View.VISIBLE);
+        if (owner != null){
+            if (foodTruck.getIdProprietaire() == owner.getIdProprietaire()){
+                removeToMyTrucks.setVisibility(View.VISIBLE);
+            } else {
+                addToMyTrucks.setVisibility(View.VISIBLE);
+            }
         }
         getSupportActionBar().setTitle(foodTruck.getNom());
         this.configureAndShowDetailsFragment();
@@ -132,5 +121,29 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             detailsFragment.setFoodTruck(foodTruck);
             getSupportFragmentManager().beginTransaction().add(R.id.map_activity_frame, detailsFragment).commit();
         }
+    }
+
+    public void onClickAppropriate(View v){
+        OwnerService.appropriateFoodTruck(this, owner.getIdProprietaire(), foodTruck.getIdFoodTruck(), owner);
+    }
+    public void onClickReturn(View v){
+        OwnerService.returnFoodTruck(this, owner.getIdProprietaire(), foodTruck.getIdFoodTruck(), owner);
+    }
+
+    @Override
+    public void onResponse(Void owner) {
+        if (removeToMyTrucks.getVisibility() == View.VISIBLE){
+            removeToMyTrucks.setVisibility(View.INVISIBLE);
+            addToMyTrucks.setVisibility(View.VISIBLE);
+        }else if (removeToMyTrucks.getVisibility() == View.INVISIBLE){
+            removeToMyTrucks.setVisibility(View.VISIBLE);
+            addToMyTrucks.setVisibility(View.INVISIBLE);
+        }
+
+    }
+
+    @Override
+    public void onFailure() {
+        addToMyTrucks.setVisibility(View.VISIBLE);
     }
 }

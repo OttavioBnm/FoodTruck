@@ -27,7 +27,7 @@ public class FoodTruck implements Serializable {
     // Champs
     @SerializedName("idFoodTruck")
     @Expose
-    private String idFoodTruck;
+    private int idFoodTruck;
     @SerializedName("nom")
     @Expose
     private String nom;
@@ -60,11 +60,11 @@ public class FoodTruck implements Serializable {
     private String contact;
 
     // Propriétées
-    public String getIdFoodTruck() {
+    public int getIdFoodTruck() {
         return idFoodTruck;
     }
 
-    public void setIdFoodTruck(String idFoodTruck) {
+    public void setIdFoodTruck(int idFoodTruck) {
         this.idFoodTruck = idFoodTruck;
     }
 
@@ -146,6 +146,18 @@ public class FoodTruck implements Serializable {
 
     public void setContact(String contact) {
         this.contact = contact;
+    }
+
+    @SerializedName("idProprietaire")
+    @Expose
+    private int idProprietaire;
+
+    public int getIdProprietaire() {
+        return idProprietaire;
+    }
+
+    public void setIdProprietaire(int idProprietaire) {
+        this.idProprietaire = idProprietaire;
     }
 
     // Méthodes

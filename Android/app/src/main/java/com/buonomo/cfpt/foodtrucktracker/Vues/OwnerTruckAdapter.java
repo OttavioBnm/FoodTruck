@@ -40,7 +40,7 @@ public class OwnerTruckAdapter extends RecyclerView.Adapter<OwnerTruckViewHolder
     public OwnerTruckViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.item, parent, false);
+        View view = inflater.inflate(R.layout.item_owner, parent, false);
         return new OwnerTruckViewHolder(view);
     }
 

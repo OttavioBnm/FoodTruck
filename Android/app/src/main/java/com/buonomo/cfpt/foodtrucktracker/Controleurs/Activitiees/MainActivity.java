@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     // Attributs de la classe
     private MainFragment mainFragment;
     private static Context instance;
-    private Owner owner;
+    private static Owner owner;
 
     /**
      * Création de l'affichage du menu dans l'action bar de l'activitée
@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.gerer:
                 OwnerFragment.setOwner(owner);
                 Intent intentOwner = new Intent(MainActivity.this, OwnerTruck.class);
+                intentOwner.putExtra("owner", owner);
                 startActivity(intentOwner);
                 return true;
             case R.id.deconnexion:
@@ -124,7 +125,15 @@ public class MainActivity extends AppCompatActivity {
      */
     public void onClickFAB(View view){
         Intent i = new Intent(MainActivity.this, AddTruck.class);
+        i.putExtra("owner", owner);
         startActivity(i);
+    }
+
+    public static Owner getOwner(){
+        if (owner != null){
+            return owner;
+        }
+        return null;
     }
 
     /**

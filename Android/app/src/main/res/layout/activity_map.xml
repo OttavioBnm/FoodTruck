@@ -28,7 +28,20 @@
             android:layout_marginTop="125dp"
             android:clickable="true"
             android:visibility="invisible"
-            app:srcCompat="@drawable/googleg_disabled_color_18" />
+            app:srcCompat="@drawable/ic_add"
+            android:onClick="onClickAppropriate"/>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_remove_to_my_trucks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="125dp"
+            android:clickable="true"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/ic_remove"
+            android:onClick="onClickReturn"/>
     </RelativeLayout>
 
 </LinearLayout>

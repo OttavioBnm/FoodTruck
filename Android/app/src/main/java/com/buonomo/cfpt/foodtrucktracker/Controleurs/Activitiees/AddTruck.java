@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -37,6 +38,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.buonomo.cfpt.foodtrucktracker.Models.Owner;
 import com.buonomo.cfpt.foodtrucktracker.Models.Product;
 import com.buonomo.cfpt.foodtrucktracker.Outils.FoodTruckService;
 import com.buonomo.cfpt.foodtrucktracker.Outils.ImageService;
@@ -85,6 +87,8 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
     RadioGroup radioGroup;
     @BindView(R.id.tbxContact)
     TextView truckContact;
+    @BindView(R.id.chkProprietaire)
+    CheckBox isOwner;
 
     // Champs
     private String[] tableProducts;
@@ -96,6 +100,7 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
     private LatLng latLng;
     private String value = "Monday";
     private String path = "";
+    private Owner owner;
 
     /**
      *
@@ -106,7 +111,13 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_truck);
         ButterKnife.bind(this);
+        owner = (Owner) getIntent().getExtras().getSerializable("owner");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (owner != null){
+            isOwner.setVisibility(View.VISIBLE);
+        }else {
+            isOwner.setVisibility(View.GONE);
+        }
         this.executeRequestProducts();
         this.radioManagment();
     }
@@ -221,6 +232,10 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
             pb.setVisibility(View.VISIBLE);
             formLocation.setVisibility(View.INVISIBLE);
             LatLng l = convertAddress(truckAddress.getText()+", "+ truckPostalCode+", "+ truckCity);
+            int idOwner = -1;
+            if (isOwner.isChecked()){
+                idOwner = owner.getIdProprietaire();
+            }
             this.executeFoodTruckCreation(
                     truckName.getText().toString(),
                     l.latitude,
@@ -228,7 +243,7 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
                     truckStartTime.getText().toString(),
                     truckEndTime.getText().toString(),
                     value,
-                    -1,
+                    idOwner,
                     truckContact.getText().toString(),
                     imgName,
                     Math.round(truckEvaluation.getRating()));
@@ -441,11 +456,11 @@ public class AddTruck extends AppCompatActivity implements ProductsService.Callb
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Quelque chose s'est mal passé", Toast.LENGTH_LONG).show();
             }
 
         }else {
-            Toast.makeText(this, "You haven't picked Image",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Vous n'avez pas choisi d'image",Toast.LENGTH_LONG).show();
         }
     }
 

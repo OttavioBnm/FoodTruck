@@ -13,14 +13,16 @@ public class OwnerTruck extends AppCompatActivity {
 
     // Attributs de la classe
     private OwnerFragment ownerFragment;
-    private static Context instance;
-    private Owner owner;
+    private static Owner owner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner_truck);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getIntent().getExtras() != null){
+            owner = (Owner) getIntent().getExtras().getSerializable("owner");
+        }
         getSupportActionBar().setTitle("Mes Food Trucks");
         this.configureAndShowOwnerFragment();
     }
@@ -42,5 +44,12 @@ public class OwnerTruck extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().add(R.id.activity_owner_frame_layout, ownerFragment).commit();
 
         }
+    }
+
+    public static Owner getOwner(){
+        return owner;
+    }
+    public static void setOwner(Owner o){
+        owner = o;
     }
 }

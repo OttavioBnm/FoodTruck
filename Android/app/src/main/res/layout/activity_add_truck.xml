@@ -55,8 +55,10 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_marginTop="20dp"
-            android:src="@android:drawable/ic_delete"
-            android:onClick="onClickProfilePicture"/>
+            android:background="@drawable/custom_textview"
+            android:cropToPadding="true"
+            android:onClick="onClickProfilePicture"
+            app:srcCompat="@drawable/image_get_image" />
 
         <LinearLayout
             android:id="@+id/form_adress_new_truck"
@@ -242,13 +244,13 @@
         </TableLayout>
 
         <CheckBox
-            android:id="@+id/chkPropriétaire"
+            android:id="@+id/chkProprietaire"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:buttonTint="@color/colorPrimaryDark"
             android:text="Je suis le propriétaire"
-            android:visibility="invisible" />
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/lblNote"

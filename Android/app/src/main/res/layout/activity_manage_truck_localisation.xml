@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Controleurs.Activitiees.ManageTruckLocalisation">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imgAjouterCamion"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/logo_tpi" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:gravity="center_vertical|center"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <EditText
+                android:id="@+id/manage_location_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/colorAccent"
+                android:ems="10"
+                android:hint="Adresse"
+                android:inputType="textPersonName"
+                android:textColorLink="@color/colorPrimary" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:onClick="getCurrentLocation"
+                app:srcCompat="@drawable/ic_localise" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/manage_location_npa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/colorAccent"
+            android:ems="10"
+            android:hint="NPA"
+            android:inputType="textPersonName"
+            android:textColorLink="@color/colorPrimary" />
+
+        <EditText
+            android:id="@+id/manage_location_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/colorAccent"
+            android:ems="10"
+            android:hint="Localité"
+            android:inputType="textPersonName"
+            android:textColorLink="@color/colorPrimary" />
+
+        <Button
+            android:id="@+id/button_update_truck"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/custom_button"
+            android:onClick="onClickExecuteLocationUpdate"
+            android:text="Mettre à jour"
+            android:textColor="@color/texte_bouton_violet" />
+
+    </LinearLayout>
+
+</ScrollView>

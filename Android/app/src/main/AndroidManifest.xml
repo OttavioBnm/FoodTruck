@@ -58,7 +58,8 @@
         <activity android:name=".Controleurs.Activitiees.CreateAccount" />
         <activity android:name=".Controleurs.Activitiees.OwnerTruck" />
         <activity android:name=".Controleurs.Activitiees.Report" />
-        <activity android:name=".Controleurs.Activitiees.ManageTruckInfo"></activity>
+        <activity android:name=".Controleurs.Activitiees.ManageTruckInfo" />
+        <activity android:name=".Controleurs.Activitiees.ManageTruckLocalisation"></activity>
     </application>
 
 </manifest>

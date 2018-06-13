@@ -26,6 +26,7 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.buonomo.cfpt.foodtrucktracker.Controleurs.Activitiees.MainActivity;
 import com.buonomo.cfpt.foodtrucktracker.Controleurs.Activitiees.Map;
 import com.buonomo.cfpt.foodtrucktracker.Models.FoodTruck;
 import com.buonomo.cfpt.foodtrucktracker.Outils.UserGPS;
@@ -58,6 +59,14 @@ public class MainFragment extends Fragment implements FoodTruckAdapter.Listener,
 
     }
 
+    @Override
+    public void onResume() {
+        if (MainActivity.getOwner() != null){
+            this.executeHttpRequestWithRetrofit();
+        }
+        super.onResume();
+    }
+
     /**
      * Création du fragment
      * @param inflater fragment xml à integrer
@@ -80,7 +89,7 @@ public class MainFragment extends Fragment implements FoodTruckAdapter.Listener,
      * Execute la requête pour la récupération des food trucks
      */
     private void executeHttpRequestWithRetrofit() {
-        final Location l = UserGPS.gps(getContext());
+        Location l = UserGPS.gps(getContext());
         FoodTruckService.getFoodTrucks(MainFragment.this, l.getLatitude(), l.getLongitude());
     }
 
@@ -116,6 +125,7 @@ public class MainFragment extends Fragment implements FoodTruckAdapter.Listener,
                 FoodTruck camion = adapter.getFoodTruck(position);
                 Intent i = new Intent(getContext(), Map.class);
                 i.putExtra("truck", camion);
+                i.putExtra("owner", MainActivity.getOwner());
                 startActivity(i);
             }
         });

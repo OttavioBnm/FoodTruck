@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -49,23 +48,46 @@
             android:layout_height="150dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/custom_textview"
-            android:src="@android:drawable/ic_delete" />
+            android:src="@android:drawable/ic_delete"
+            android:onClick="onClickProfilePicture"/>
 
-        <Spinner
-            android:id="@+id/spinner_locations"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp"
-            android:spinnerMode="dialog" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Spinner
+                android:id="@+id/spinner_locations"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:minHeight="60dp"
+                android:spinnerMode="dialog" />
+
+            <Button
+                android:id="@+id/button"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/custom_button"
+                android:text="Modifier"
+                android:textColor="@color/texte_bouton_violet"
+                android:onClick="onClickUpdateLocation"/>
+        </LinearLayout>
 
         <Button
             android:id="@+id/button_update_truck"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/custom_button"
-            android:text="Modifier"
-            android:textColor="@color/texte_bouton_violet"
-            android:onClick="onClickUpdateTruck"/>
+            android:onClick="onClickUpdateTruck"
+            android:text="Mettre à jour"
+            android:textColor="@color/texte_bouton_violet" />
     </LinearLayout>
 </ScrollView>

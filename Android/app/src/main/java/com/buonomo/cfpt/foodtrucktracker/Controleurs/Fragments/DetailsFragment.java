@@ -116,7 +116,7 @@ public class DetailsFragment extends android.support.v4.app.Fragment implements 
     }
     public void giveRating(){
         if (ratingFlag){
-            executeAddRatingWithRetrofit(Math.round(ratingBarDetail.getRating()), Integer.parseInt(truck.getIdFoodTruck()));
+            executeAddRatingWithRetrofit(Math.round(ratingBarDetail.getRating()), truck.getIdFoodTruck());
         }
     }
 

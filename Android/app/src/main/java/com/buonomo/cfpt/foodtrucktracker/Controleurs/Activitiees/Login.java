@@ -15,7 +15,6 @@ import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -30,17 +29,18 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.buonomo.cfpt.foodtrucktracker.Models.Owner;
 import com.buonomo.cfpt.foodtrucktracker.Outils.LoginService;
+import com.buonomo.cfpt.foodtrucktracker.Outils.SHA1;
 import com.buonomo.cfpt.foodtrucktracker.R;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -96,7 +96,13 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor>,
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
+                    try {
+                        attemptLogin();
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    } catch (NoSuchAlgorithmException e) {
+                        e.printStackTrace();
+                    }
                     return true;
                 }
                 return false;
@@ -107,7 +113,13 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor>,
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                try {
+                    attemptLogin();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -164,7 +176,7 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor>,
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private void attemptLogin() {
+    private void attemptLogin() throws UnsupportedEncodingException, NoSuchAlgorithmException {
 
         // Reset errors.
         mEmailView.setError(null);
@@ -203,7 +215,7 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor>,
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            this.executeLoginRequest(email, password);
+            this.executeLoginRequest(email, SHA1.hash(password));
         }
     }
 

@@ -11,16 +11,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.buonomo.cfpt.foodtrucktracker.Models.Owner;
 import com.buonomo.cfpt.foodtrucktracker.Outils.OwnerService;
 import com.buonomo.cfpt.foodtrucktracker.R;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CreateAccount extends AppCompatActivity implements OwnerService.Callbacks {
+public class CreateAccount extends AppCompatActivity implements OwnerService.CallbacksAddOwner {
 
     @BindView(R.id.textfield_create_name)
     TextView name;
