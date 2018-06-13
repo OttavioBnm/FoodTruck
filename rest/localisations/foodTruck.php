@@ -13,7 +13,7 @@ require '../pdo.php';
 function getLocalisationInfo($idFoodTruck) {
     if ($requestUpdate == NULL) {
         $db = getDB();
-        $requestUpdate = $db->prepare("SELECT `idFoodTruck`, TLOCALISATION.Latitude, TLOCALISATION.Longitude, `HoraireDebut`, `HoraireFin`, `JourSemaine` FROM `TESTA`, TLOCALISATION WHERE TESTA.idLocalisation = TLOCALISATION.idLocalisation AND `idFoodTruck` = :idFoodTruck");
+        $requestUpdate = $db->prepare("SELECT TLOCALISATION.Latitude, TLOCALISATION.Longitude, `HoraireDebut`, `HoraireFin`, `JourSemaine` FROM `TESTA`, TLOCALISATION WHERE TESTA.idLocalisation = TLOCALISATION.idLocalisation AND `idFoodTruck` = :idFoodTruck");
     }
     $requestUpdate->bindParam(':idFoodTruck', $idFoodTruck, PDO::PARAM_INT);
     $requestUpdate->execute();

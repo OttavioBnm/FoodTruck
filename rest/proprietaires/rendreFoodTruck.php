@@ -36,4 +36,4 @@ function rendreUnFoodTruck($idFoodTruck, $idProprietaire) {
 $idProprietaire = filter_input(INPUT_POST, 'idProprietaire', FILTER_VALIDATE_INT);
 $idFoodTruck = filter_input(INPUT_POST, 'idFoodTruck', FILTER_VALIDATE_INT);
 
-sApproprierUnFoodTruck($idFoodTruck, $idProprietaire);
+rendreUnFoodTruck($idFoodTruck, $idProprietaire);

@@ -8,6 +8,7 @@
  * Version      : 1.0
  */
 
+require '../pdo.php';
 require '../fonctions.inc/verifieProprietaire.php';
 require '../fonctions.inc/supprimerImageServer.php';
 
@@ -17,13 +18,14 @@ require '../fonctions.inc/supprimerImageServer.php';
  */
 function supprimerFoodTruckSelonId($idFoodTruck) {
     if (verifieProprietaire($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])) {
+        var_dump($idFoodTruck);
         try {
             $db = getDB();
             $request = $db->prepare("DELETE FROM `TFOODTRUCK` WHERE `idFoodTruck` = :idFoodTruck");
             $request->bindParam(':idFoodTruck', $idFoodTruck, PDO::PARAM_INT);
             $request->execute();
         } catch (Exception $exc) {
-            header("HTTP/1.1 500 Internal Server Erorr");
+            header("HTTP/1.1 500 Internal Server Error");
         }
     } else {
         header("HTTP/1.1 403 Forbidden");
@@ -34,7 +36,7 @@ $idFoodTruck = filter_input(INPUT_POST, 'idFoodTruck', FILTER_VALIDATE_INT);
 $imageFoodTruck = filter_input(INPUT_POST, 'image', FILTER_SANITIZE_STRING);
 
 // Supprime l'image du server
-supprimerMediaFromServer($imageFoodTruck);
+supprimerMediaDuServer($imageFoodTruck);
 
 // Supprime le food truck
 supprimerFoodTruckSelonId($idFoodTruck);

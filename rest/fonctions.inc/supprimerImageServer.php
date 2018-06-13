@@ -12,6 +12,6 @@
  * Supprime l'image du server
  * @param string $nomMedia - nom de l'image à supprimer
  */
-function supprimerMediaFromServer($nomMedia) {
+function supprimerMediaDuServer($nomMedia) {
     unlink("img/" . $nomMedia);
 }

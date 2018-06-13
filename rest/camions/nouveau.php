@@ -9,8 +9,7 @@
  * Version      : 1.0
  */
 
-// Require du PDO
-require "../pdo.php";
+
 require '../localisations/nouveau.php';
 require '../horaire/nouveau.php';
 
@@ -35,6 +34,7 @@ function creerFoodTruck($nom, $image, $lon, $lat, $heureDebut, $heureFin, $jourS
     if (empty($nom) || empty($lon) || empty($lat) || empty($heureDebut) || empty($heureFin) || empty($jourSemaine) || empty($image)) {
         return false;
     }
+    var_dump($proprietaire);
     if ($proprietaire === -1) {
         $proprietaire === NULL;
     }
@@ -94,7 +94,7 @@ function ajouterFoodTruck($nom, $image, $contact, $idProprietaire) {
         $dbQuery->bindParam(':nomFoodTruck', $nom);
         $dbQuery->bindParam(':image', $image);
         $dbQuery->bindParam(':contact', $contact);
-        $dbQuery->bindParam(':idProprietaire', $proprietaire);
+        $dbQuery->bindParam(':idProprietaire', $idProprietaire);
         $dbQuery->execute();
     } catch (Exception $exc) {
         return FALSE;

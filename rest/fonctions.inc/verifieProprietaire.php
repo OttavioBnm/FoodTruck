@@ -8,7 +8,6 @@
  * Version      : 1.0
  */
 
-require "../pdo.php";
 
 // required headers
 header("Access-Control-Allow-Origin: *");

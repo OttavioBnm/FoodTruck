@@ -28,6 +28,7 @@ class FoodTruck {
     public $jourSemaine;
     public $lstProduits;
     public $contact;
+    public $idProprietaire;
 }
 
 /**
@@ -56,6 +57,7 @@ function getFoodTrucks($latUtilisateur, $lonUtilisateur) {
         $obj->heureFin = $entry['HoraireFin'];
         $obj->jourSemaine = $entry['JourSemaine'];
         $obj->contact = $entry['Contact'];
+        $obj->idProprietaire = $entry['idProprietaire'];
         $obj->lstProduits = getProduitSelonIdFoodTruck($obj->idFoodTruck);
         $array[] = $obj;
     }

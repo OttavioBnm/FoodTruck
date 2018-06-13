@@ -15,7 +15,7 @@
  */
 function getProduitSelonIdFoodTruck($id) {
     $db = getDB();
-    $request = $db->prepare("SELECT TPRODUIT.`idProduit`, TPRODUIT.`Nom` FROM `TPRODUIT`, TFOODTRUCK, TVEND WHERE TFOODTRUCK.idFoodTruck = :id AND TVEND.idProduit = TPRODUIT.idProduit");
+    $request = $db->prepare("SELECT TPRODUIT.`idProduit`, TPRODUIT.`Nom` FROM `TPRODUIT`, TFOODTRUCK, TVEND WHERE TFOODTRUCK.idFoodTruck = :id AND TVEND.idProduit = TPRODUIT.idProduit AND TVEND.idFoodTruck = :id");
     $request->bindParam(':id', $id, PDO::PARAM_INT);
     $request->execute();
     $data = $request->fetchAll(PDO::FETCH_ASSOC);

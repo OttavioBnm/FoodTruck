@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Projet       : Food Truck Tracker (service web)
  * Nom          : camions/modifier.php
@@ -9,25 +10,9 @@
  */
 
 // require du scripte d'ajout de localisation
-require '../pdo.php';
-
-/**
- * Modifie un food truck sur la base de données
- * @param int $idFoodTruck      - id du food truck à modifier
- * @param string $nom           - nouveau nom du food truck
- * @param string $image         - nouvelle image du food truck
- * @param double $lat           - nouvelle latitude du food truck
- * @param double $lon           - nouvelle longitude du food truck
- * @param string $heureDebut    - nouvelle heure de début du food truck
- * @param string $heureFin      - nouvelle heure de fin du food truck
- * @param string $jourSemaine   - nouveau jour de la semaine du food truck
- * @param string $contact       - nouveau contact du food truck
- */
-/*function modifierFoodTruckSelonId($idFoodTruck, $nom, $image, $lat, $lon, $heureDebut, $heureFin, $jourSemaine, $contact) {
-    modifierSeulementFoodTruck($nom, $image, $contact, $idFoodTruck);
-    modifierLocalisationInfo($lat, $lon, $idFoodTruck);
-    modifierHoraire($heureDebut, $heureFin, $jourSemaine, $idFoodTruck);
-}*/
+require '../fonctions.inc/sauvegarderImage.php';
+require '../fonctions.inc/supprimerImageServer.php';
+require '../fonctions.inc/verifieProprietaire.php';
 
 /**
  * Modifie uniquement les informations de la table TFOODTRUCK
@@ -36,16 +21,34 @@ require '../pdo.php';
  * @param string $contact       - nouveau contact du food truck
  * @param int $idFoodTruck      - id du food truck à modifier
  */
-function modifierSeulementFoodTruck($idFoodTruck, $nom, $image, $contact){
-    if ($requestUpdate == NULL) {
-        $db = getDB();
-        $requestUpdate = $db->prepare("UPDATE `TFOODTRUCK` SET `Nom`= :nom,`Image`=:image,`Contact`= :contact WHERE `idFoodTruck` = :idFoodTruck");
+function modifierSeulementFoodTruck($idFoodTruck, $nom, $image, $contact) {
+    if (verifieProprietaire($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])) {
+        supprimerAncienMedia($idFoodTruck);
+        try {
+            if ($requestUpdate == NULL) {
+                $db = getDB();
+                $requestUpdate = $db->prepare("UPDATE `TFOODTRUCK` SET `Nom`= :nom,`Image`=:image,`Contact`= :contact WHERE `idFoodTruck` = :idFoodTruck");
+            }
+            $requestUpdate->bindParam(':nom', $nom, PDO::PARAM_STR);
+            $requestUpdate->bindParam(':image', $image, PDO::PARAM_STR);
+            $requestUpdate->bindParam(':contact', $contact, PDO::PARAM_STR);
+            $requestUpdate->bindParam(':idFoodTruck', $idFoodTruck, PDO::PARAM_INT);
+            $requestUpdate->execute();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }else{
+        header("HTTP/1.1 403 Forbidden");
     }
-    $requestUpdate->bindParam(':nom', $nom, PDO::PARAM_STR);
-    $requestUpdate->bindParam(':image', $image, PDO::PARAM_STR);
-    $requestUpdate->bindParam(':contact', $contact, PDO::PARAM_STR);
+}
+
+function supprimerAncienMedia($idFoodTruck) {
+    $db = getDB();
+    $requestUpdate = $db->prepare("SELECT `Image` FROM `TFOODTRUCK` WHERE `idFoodTruck` = :idFoodTruck");
     $requestUpdate->bindParam(':idFoodTruck', $idFoodTruck, PDO::PARAM_INT);
     $requestUpdate->execute();
+    $data = $requestUpdate->fetchAll(PDO::FETCH_ASSOC);
+    supprimerMediaDuServer($data['image']);
 }
 
 // Données provenant de l'application

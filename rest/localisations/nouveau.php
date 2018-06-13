@@ -8,6 +8,9 @@
  * Version      : 1.0
  */
 
+// Require du PDO
+require "../pdo.php";
+
 /**
  * Ajoute un lieu à la base de données ou récupère l'id d'un lieu existant
  * @param double $lat   - Latitude du lieu
@@ -85,3 +88,9 @@ function verifierSiLieuExiste($lat, $lon) {
         return "Erreur";
     }
 }
+
+
+$lat = filter_input(INPUT_POST, 'latitude', FILTER_VALIDATE_FLOAT);
+$lon = filter_input(INPUT_POST, 'longitude', FILTER_VALIDATE_FLOAT);
+
+creerLieu($lat, $lon);
