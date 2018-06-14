@@ -1,14 +1,21 @@
 <?php
+/*
+ * Projet       : Food Truck Tracker (service web)
+ * Nom          : localisation/foodTruck.php
+ * Description  : Récupère une localisation selon l'identifiant du food trcuk
+ * Auteur       : Ottavio Buonomo
+ * Date         : 06.06.2018
+ * Version      : 1.0
+ */
+
 static $requestUpdate = NULL;
 
 // Require pour le script
 require '../pdo.php';
 
 /**
- * Modifie uniquement les informations de la table TLOCALISATION
- * @param double $lat           - nouvelle latitude du food truck
- * @param double $lon           - nouvelle longitude du food truck
- * @param int $idFoodTruck      - id du food truck à modifier
+ * Récupère les informations sur une localisation
+ * @param int $idFoodTruck      - id du food truck
  */
 function getLocalisationInfo($idFoodTruck) {
     if ($requestUpdate == NULL) {

@@ -35,6 +35,12 @@ class FoodTruck {
  * Récupère tous les food truck de la base de donnée et les transforme en JSON qui sont à une position le jour courant
  * @return array de json - tous les food trucks dans un tableau
  */
+/**
+ * Récupère tous les food truck de la base de donnée et les transforme en JSON qui sont à une position le jour courant
+ * @param double $latUtilisateur - latitude de l'utilisateur
+ * @param double $lonUtilisateur - longitude de l'utilisateur
+ * @return array de json - tous les food trucks dans un tableau
+ */
 function getFoodTrucks($latUtilisateur, $lonUtilisateur) {
     $today = date('l');
     $db = getDB();

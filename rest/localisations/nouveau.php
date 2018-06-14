@@ -20,7 +20,7 @@ require "../pdo.php";
  */
 function creerLieu($lat, $lon) {
     try {
-        $LieuExiste = verifierSiLieuExiste($lat, $lon);
+        $LieuExiste = verifierSiLieuExiste($lat, $lon); 
         if ($LieuExiste === FALSE) {
             return ajouterLieu($lat, $lon);
         } else if ($LieuExiste === "Erreur") {

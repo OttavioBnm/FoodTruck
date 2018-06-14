@@ -1,4 +1,12 @@
 <?php
+/*
+ * Projet       : Food Truck Tracker (service web)
+ * Nom          : horaire/modifier.php
+ * Description  : Permet de modifier l'horaire d'un food truck
+ * Auteur       : Ottavio Buonomo
+ * Date         : 06.06.2018
+ * Version      : 1.0
+ */
 
 /**
  * Modifie uniquement les informations de la table TESTA

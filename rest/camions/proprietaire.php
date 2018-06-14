@@ -34,7 +34,8 @@ class FoodTruck {
 
 /**
  * Récupère tous les food truck de la base de donnée et les transforme en JSON selon le propriétaire
- * @return array de json - tous les food trucks dans un tableau
+ * @param int $idProprietaire   - identifiant du propriétaire
+ * @return array de json        - tous les food trucks dans un tableau
  */
 function getFoodTrucksSelonProprieatire($idProprietaire) {
     try {

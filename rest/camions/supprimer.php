@@ -14,7 +14,7 @@ require '../fonctions.inc/supprimerImageServer.php';
 
 /**
  * Supprime un food truck de la base de données
- * @param type $idFoodTruck
+ * @param int $idFoodTruck - identifiant du food trcuk
  */
 function supprimerFoodTruckSelonId($idFoodTruck) {
     if (verifieProprietaire($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])) {

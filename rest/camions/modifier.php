@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Projet       : Food Truck Tracker (service web)
  * Nom          : camions/modifier.php
@@ -9,7 +8,7 @@
  * Version      : 1.0
  */
 
-// require du scripte d'ajout de localisation
+// require des différents script
 require '../fonctions.inc/sauvegarderImage.php';
 require '../fonctions.inc/supprimerImageServer.php';
 require '../fonctions.inc/verifieProprietaire.php';
@@ -42,6 +41,10 @@ function modifierSeulementFoodTruck($idFoodTruck, $nom, $image, $contact) {
     }
 }
 
+/**
+ * Supprimer l'ancien media du server
+ * @param int $idFoodTruck - identifiant unique du food truck
+ */
 function supprimerAncienMedia($idFoodTruck) {
     $db = getDB();
     $requestUpdate = $db->prepare("SELECT `Image` FROM `TFOODTRUCK` WHERE `idFoodTruck` = :idFoodTruck");

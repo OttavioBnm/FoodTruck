@@ -2,23 +2,16 @@
 /*
  * Projet       : Food Truck Tracker (service web)
  * Nom          : fonctions.inc/verifieProprietaire.php
- * Description  : Permet de érifier si l'utilisateur est authentifié
+ * Description  : Permet de vérifier si l'utilisateur est authentifié
  * Auteur       : Ottavio Buonomo
  * Date         : 06.06.2018
  * Version      : 1.0
  */
 
-
-// required headers
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Max-Age: 3600");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-
 // récupère les données dans les headers
 $user = $_SERVER['PHP_AUTH_USER'];
 $pass = $_SERVER['PHP_AUTH_PW'];
+require '../pdo.php';
 
 // vérification si l'utilisateur à le droit d'effectuer une requête
 if (verifieProprietaire($user, $pass)) {

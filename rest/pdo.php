@@ -1,4 +1,12 @@
 ﻿<?php
+/*
+ * Projet       : Food Truck Tracker (service web)
+ * Nom          : pdo.php
+ * Description  : Classe pour le connecteur à la base de données
+ * Auteur       : Ottavio Buonomo
+ * Date         : 06.06.2018
+ * Version      : 1.0
+ */
 
 // Constantes
 DEFINE('DBHOST',"localhost");

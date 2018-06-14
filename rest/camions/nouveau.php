@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Projet       : Food Truck Tracker (service web)
  * Nom          : camions/nouveau.php
@@ -9,7 +8,7 @@
  * Version      : 1.0
  */
 
-
+// require des différents script
 require '../localisations/nouveau.php';
 require '../horaire/nouveau.php';
 
@@ -27,16 +26,17 @@ static $request = "";
  * @param int $note             - Note du FT (peut êstre NULL)
  * @param int $proprietaire     - Id du proprietaire du FT (peut être NULL)
  * @param string $contact       - Contact pour un FT (peut être NULL)
+ * @param array $products       - Contact pour un FT (peut être NULL)
  * @return boolean $flagOK      - Témoin pour l'ajout du FT (true ou false)
  */
 function creerFoodTruck($nom, $image, $lon, $lat, $heureDebut, $heureFin, $jourSemaine, $note, $proprietaire, $contact, $products) {
     $flagOk = true;
+    
     if (empty($nom) || empty($lon) || empty($lat) || empty($heureDebut) || empty($heureFin) || empty($jourSemaine) || empty($image)) {
         return false;
     }
-    var_dump($proprietaire);
     if ($proprietaire === -1) {
-        $proprietaire === NULL;
+        $proprietaire = NULL;
     }
     try {
         $truckExiste = verifierSiFoodTruckExiste($nom);
@@ -108,8 +108,12 @@ function ajouterFoodTruck($nom, $image, $contact, $idProprietaire) {
     }
 }
 
+/**
+ * Ajoute des produits pour un food trcuk
+ * @param int $idProduit    - identifiant du produit 
+ * @param int $idFoodTruck  - identifiant du food trcuk
+ */
 function ajouterDesProduits($idProduit, $idFoodTruck) {
-        error_log(" OK ");
     try {
         $request = "INSERT INTO `TVEND`(`idFoodTruck`, `idProduit`) VALUES (:idFoodTruck, :idProduit)";
         $connect = getDB();

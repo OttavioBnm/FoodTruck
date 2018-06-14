@@ -6,14 +6,13 @@ static $requestUpdate = NULL;
 
 /**
  * Modifie uniquement les informations de la table TLOCALISATION
- * @param double $lat           - nouvelle latitude du food truck
- * @param double $lon           - nouvelle longitude du food truck
- * @param int $idFoodTruck      - id du food truck à modifier
+ * @param double $lat       - nouvelle latitude du food truck
+ * @param double $lon       - nouvelle longitude du food truck
+ * @param string $jSemaine  - nouveau jour de la semaine
+ * @param int $idFoodTruck  - id du food truck à modifier
  */
 function modifierLocalisationInfo($lat, $lon, $idFoodTruck, $jSemaine) {
     $idLocalisation = creerLieu($lat, $lon);
-    error_log("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-    error_log($idFoodTruck);
     try {
         if ($requestUpdate == NULL) {
         $db = getDB();
@@ -25,6 +24,7 @@ function modifierLocalisationInfo($lat, $lon, $idFoodTruck, $jSemaine) {
     $requestUpdate->execute();
     } catch (Exception $exc) {
         error_log($exc);
+        header("HTTP/1.1 500 Internale Server Error");
     }
 }
 

@@ -18,7 +18,6 @@ require "../pdo.php";
  * Transfère une image sur le server
  * @param string $typeMedia     - définit le type d'image sur le server
  * @param array $ext            - tableau des extensions permises
- * @param int $idFoodTruck      - id du food truck
  */
 function transfererSurServeur($typeMedia, $ext) {
     if (isset($_FILES['image'])) {
