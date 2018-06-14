@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_application"
-    tools:context=".Controleurs.Activitiees.Report">
+    tools:context=".Controleurs.Activites.Report">
 
     <ImageView
         android:id="@+id/imgInfotmation"
@@ -20,10 +20,8 @@
         android:id="@+id/lblinformations"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="259dp"
-        android:text="Informations" />
+        android:layout_centerInParent="true"
+        android:text="Si vous souhaitez envoyer un message à l'administrateur  " />
 
     <Button
         android:id="@+id/button_contacter_admin"
@@ -32,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="149dp"
+        android:layout_marginBottom="205dp"
         android:background="@drawable/custom_button"
         android:onClick="onClickSendEmail"
         android:text="Contacter l'administrateur"

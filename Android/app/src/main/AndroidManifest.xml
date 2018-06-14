@@ -24,7 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Controleurs.Activitiees.MainActivity"
+            android:name=".Controleurs.Activites.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,21 +45,21 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".Controleurs.Activitiees.Map"
+            android:name=".Controleurs.Activites.Map"
             android:label="@string/title_activity_carte"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Controleurs.Activitiees.AddTruck"
+            android:name=".Controleurs.Activites.AddTruck"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Controleurs.Activitiees.Login"
+            android:name=".Controleurs.Activites.Login"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait" />
-        <activity android:name=".Controleurs.Activitiees.CreateAccount" />
-        <activity android:name=".Controleurs.Activitiees.OwnerTruck" />
-        <activity android:name=".Controleurs.Activitiees.Report" />
-        <activity android:name=".Controleurs.Activitiees.ManageTruckInfo" />
-        <activity android:name=".Controleurs.Activitiees.ManageTruckLocalisation"></activity>
+        <activity android:name=".Controleurs.Activites.CreateAccount" />
+        <activity android:name=".Controleurs.Activites.OwnerTruck" />
+        <activity android:name=".Controleurs.Activites.Report" />
+        <activity android:name=".Controleurs.Activites.ManageTruckInfo" />
+        <activity android:name=".Controleurs.Activites.ManageTruckLocalisation"></activity>
     </application>
 
 </manifest>

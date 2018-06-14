@@ -76,14 +76,37 @@ public class FoodTruckService {
         void onFailure();
     }
 
-    public static void createFoodTruck(CallbacksCreateFoodTruck callbacksCreateFoodTruck, String name, double lat, double lon, String startTime, String endTime, String weekDay, int idOwner, String contact, String image, int rating, String ids){
+    /**
+     * Exécute la requête http pour l'ajout de food truck
+     * en l'interfaçant avec l'accès au service de rétrofit
+     * @param callbacksCreateFoodTruck
+     * @param name Nom du food truck
+     * @param lat  Latitude du food truck
+     * @param lon Longitude du food truck
+     * @param startTime Heure de début de vente du food trucks
+     * @param endTime Heure de fin de vente du food trucks
+     * @param weekDay Jour de la vente
+     * @param idOwner Id du propriétaire
+     * @param contact Contact du food truck
+     * @param image Image du food truck
+     * @param rating Note du food truck
+     * @param ids Identifiants des produits
+     */
+    public static void createFoodTruck(CallbacksCreateFoodTruck callbacksCreateFoodTruck,
+                                       String name,
+                                       double lat,
+                                       double lon,
+                                       String startTime,
+                                       String endTime,
+                                       String weekDay,
+                                       int idOwner,
+                                       String contact,
+                                       String image,
+                                       int rating,
+                                       String ids){
         final WeakReference<CallbacksCreateFoodTruck> callbacksWeakReference = new WeakReference<CallbacksCreateFoodTruck>(callbacksCreateFoodTruck);
-
-
         ServiceAccess serviceAccess = ServiceAccess.retrofitCreateFoodTruck.create(ServiceAccess.class);
-
         retrofit2.Call<String> call = serviceAccess.createFoodTruck(name,lat, lon,startTime, endTime, weekDay, idOwner, contact, image, rating, ids);
-
         call.enqueue(new Callback<String>() {
             /**
              * Réponse positive du service web
@@ -106,7 +129,7 @@ public class FoodTruckService {
             public void onFailure(retrofit2.Call<String> call, Throwable t) {
                 if (callbacksWeakReference.get() != null){
                     callbacksWeakReference.get().onFailure();
-                    System.out.println(t.getMessage());
+                    t.printStackTrace();
                 }
             }
         });

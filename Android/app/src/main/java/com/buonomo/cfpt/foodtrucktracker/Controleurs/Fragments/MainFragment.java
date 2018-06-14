@@ -26,8 +26,8 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.buonomo.cfpt.foodtrucktracker.Controleurs.Activitiees.MainActivity;
-import com.buonomo.cfpt.foodtrucktracker.Controleurs.Activitiees.Map;
+import com.buonomo.cfpt.foodtrucktracker.Controleurs.Activites.MainActivity;
+import com.buonomo.cfpt.foodtrucktracker.Controleurs.Activites.Map;
 import com.buonomo.cfpt.foodtrucktracker.Models.FoodTruck;
 import com.buonomo.cfpt.foodtrucktracker.Outils.UserGPS;
 import com.buonomo.cfpt.foodtrucktracker.Outils.ItemClickSupport;

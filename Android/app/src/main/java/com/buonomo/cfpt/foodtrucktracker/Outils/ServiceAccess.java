@@ -61,6 +61,15 @@ public interface ServiceAccess {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
+    /**
+     * Interface d'envoi d'une requête http pour la création d'un propriétaire
+     * @param name nom du nouveau propriétaire
+     * @param firstname prénom du nouveau propriétaire
+     * @param username pseudo du nouveau propriétaire
+     * @param email adresse électronique du nouveau propriétaire
+     * @param password mot de passe du nouveau propriétaire
+     * @return
+     */
     @POST("proprietaires/nouveau.php")
     @FormUrlEncoded
     Call<Void> createOwner(
@@ -145,7 +154,14 @@ public interface ServiceAccess {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
-    @Multipart
+    /**
+     * Interface permettant d'envoyer une requête http
+     * pour la mise à jour d'une position d'un food truck
+     * @param lat Nouvelle latitude
+     * @param lon Nouvelle longitude
+     * @param idFoodTruck Identifiant du food truck
+     * @param day Nouveau jour de la semaine
+     */
     @POST("localisations/modifier.php")
     @FormUrlEncoded
     Call<Void> updateLocationInfos(

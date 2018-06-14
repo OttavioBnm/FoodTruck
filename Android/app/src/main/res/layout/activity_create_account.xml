@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background_application"
     android:orientation="vertical"
-    tools:context=".Controleurs.Activitiees.CreateAccount">
+    tools:context=".Controleurs.Activites.CreateAccount">
 
     <LinearLayout
         android:layout_width="match_parent"

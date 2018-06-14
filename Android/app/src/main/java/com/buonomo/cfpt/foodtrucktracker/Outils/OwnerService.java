@@ -17,17 +17,20 @@ public class OwnerService {
     }
 
     /**
-     * Permet de récupérer la liste des food trucks
+     * Permet d'ajouter un nouvel utilisateur à la base de données
      * @param callback l'interface de callback de la classe
-     *
+     * @param name nom du nouveau propriétaire
+     * @param firstname prénom du nouveau propriétaire
+     * @param username pseudo du nouveau propriétaire
+     * @param email adresse électronique du nouveau propriétaire
+     * @param password mot de passe du nouveau propriétaire
      */
-    public static void newOwner(CallbacksAddOwner callback, String nom, String prenom, String pseudo, String email, String password){
+    public static void newOwner(CallbacksAddOwner callback, String name, String firstname, String username, String email, String password){
         final WeakReference<CallbacksAddOwner> callbacksWeakReference = new WeakReference<CallbacksAddOwner>(callback);
-
 
         ServiceAccess serviceAccess = ServiceAccess.retrofitCreateOwner.create(ServiceAccess.class);
 
-        retrofit2.Call<Void> call = serviceAccess.createOwner(nom, prenom, pseudo, email, password);
+        retrofit2.Call<Void> call = serviceAccess.createOwner(name, firstname, username, email, password);
 
         call.enqueue(new Callback<Void>() {
             /**

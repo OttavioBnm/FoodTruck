@@ -13,7 +13,7 @@ package com.buonomo.cfpt.foodtrucktracker.Models;
 import android.location.Address;
 import android.location.Geocoder;
 
-import com.buonomo.cfpt.foodtrucktracker.Controleurs.Activitiees.MainActivity;
+import com.buonomo.cfpt.foodtrucktracker.Controleurs.Activites.MainActivity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

@@ -111,9 +111,18 @@ public class DetailsFragment extends android.support.v4.app.Fragment implements 
         super.onDestroy();
     }
 
+    /**
+     * Permet d'exécuter la requête http pour l'ajout d'un évaluation
+     * @param rate Note du food truck
+     * @param idFoodTruck Identifiant du food truck
+     */
     public void executeAddRatingWithRetrofit(int rate, int idFoodTruck){
         FoodTruckService.addEvaluation(this, rate, idFoodTruck);
     }
+
+    /**
+     * Permet de donner une évaluation à un food trcuk
+     */
     public void giveRating(){
         if (ratingFlag){
             executeAddRatingWithRetrofit(Math.round(ratingBarDetail.getRating()), truck.getIdFoodTruck());

@@ -12,11 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.buonomo.cfpt.foodtrucktracker.Controleurs.Activitiees.ManageTruckInfo;
-import com.buonomo.cfpt.foodtrucktracker.Controleurs.Activitiees.OwnerTruck;
+import com.buonomo.cfpt.foodtrucktracker.Controleurs.Activites.ManageTruckInfo;
+import com.buonomo.cfpt.foodtrucktracker.Controleurs.Activites.OwnerTruck;
 import com.buonomo.cfpt.foodtrucktracker.Models.FoodTruck;
 import com.buonomo.cfpt.foodtrucktracker.Models.Owner;
 import com.buonomo.cfpt.foodtrucktracker.Outils.FoodTruckService;
